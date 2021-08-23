@@ -1,0 +1,121 @@
+﻿@model IEnumerable<GloableCommunication.DbModels.Perfecture>
+
+@{
+    ViewData["Title"] = "PrefectureListView";
+    Layout = null;
+}
+
+<div>
+    <div>
+        <button class="w3-button w3-green" data-dismiss="modal"
+                onclick="ReturnBtn()"><i class="fa fa-arrow-left"></i></button>
+    </div>
+    <div>
+        <a asp-action="Create" style="font-size:15px; padding-left:10px">戻る</a>
+
+    </div>
+</div>
+
+<style>
+    tr:hover td {
+        background-color: #0095ff;
+        cursor: pointer;
+    }
+
+    /*table tr.active {
+        background-color: #0095ff;
+    }*/
+
+    td .selectRow {
+        border: 1px #DDD solid;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .selected {
+        background-color: #0095ff;
+        color: #FFF;
+    }
+    .modal-nw {
+        max-width: 50% !important;
+        align-self: center !important;
+    }
+</style>
+
+<div class=" w3-margin-top w3-gray">
+    <h5 style="text-align:center">県区一覧</h5>
+</div>
+
+
+<table id="prefectureTable" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th style="display:none">
+            </th>
+            <th>
+                県区CD
+            </th>
+            <th>
+                県区
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="display:none">
+                    @Html.DisplayFor(modelItem => item.PerfectureId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PerfectureCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PerfectureName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(ModalBtn).prop("disabled", true);
+
+    $("#prefectureTable tr").click(function () {
+        $(this).addClass('selected').siblings().removeClass('selected');
+        var value = $(this).find('td:nth-child(3)').html();
+        var nameValueTrim = value.trim();
+        $("input[name='PerfectureName']").val(nameValueTrim);
+        var idValue = $(this).find('td:nth-child(1)').html();
+        $("input[name='PerfectureId']").val(idValue);
+        $(ModalBtn).prop("disabled", false);
+
+    });
+
+    function ReturnBtn() {
+        $("input[name='PerfectureId']").val('');
+        $("input[name='PerfectureName']").val('');
+        $('#listViewModal').modal('hide');
+    }
+
+    $(document).ready(function () {
+        $('#prefectureTable').DataTable({
+            "lengthMenu": [5, 10, 15, 20, 30],
+            "language": {
+                "search": "検索:",
+                "paginate": {
+                    "first": "一ページ目",
+                    "last": "最後のページ",
+                    "next": "次へ",
+                    "previous": "前へ"
+                },
+                "lengthMenu": " _MENU_ 件表示",
+                "info": "検索結果 _TOTAL_ 以上 のうち _START_ ~ _END_件",
+                "infoEmpty": "検索結果 0 以上 のうち 0 ~ 0件",
+                "emptyTable": "条件に一致する結果は見つかりませんでした",
+                "zeroRecords": "条件に一致する結果は見つかりませんでした",
+            },
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>

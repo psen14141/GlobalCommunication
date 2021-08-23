@@ -1,0 +1,1826 @@
+﻿@model GloableCommunication.Areas.Trainee.Models.ViewModel.TraineeMasterDetailView
+
+@{
+    ViewData["Title"] = "DetailViewTrainee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+<script>
+    $('#bologna-list a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+</script>
+
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .modal {
+        position: center;
+        width: 70%;
+        height: 70%;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.9);
+    }
+
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 50%;
+        max-width: 400px;
+    }
+
+    #caption {
+        margin: auto;
+        display: block;
+        width: 50%;
+        max-width: 500px;
+        text-align: center;
+        color: #ccc;
+        padding: 10px 0;
+        height: 50px;
+    }
+
+    .close {
+        position: absolute;
+        top: 5px;
+        right: 15px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
+
+<style>
+    .bs-example {
+        margin: 20px;
+    }
+</style>
+
+<style>
+    #parent {
+        display: flex;
+    }
+
+    #narrow {
+        width: 500px;
+    }
+
+    #wide {
+        flex: 1;
+    }
+
+    canvas {
+        width: 800px !important;
+        height: 400px !important;
+    }
+
+    #outer {
+        width: 100%;
+        text-align: center;
+    }
+
+    .inner {
+        display: inline-block;
+    }
+
+    body {
+        padding: 2rem 0rem;
+    }
+</style>
+
+<div>
+    <button class="w3-button w3-green" onclick="goBack()"><i class="fa fa-arrow-left"></i></button>
+    @*<button class="w3-button" style="background-color: #e7e7e7; color:blue;" onclick="ClearData()"><i class="fa fa-undo"></i></button>*@
+    <button class="w3-button w3-blue"><i class="fa fa-print"></i></button>
+</div>
+
+<div class="form-group">
+    <div class="row">
+        <a asp-action="Create" style="font-size:14px; padding-left:10px">戻 る</a>
+        @*<a asp-action="Create" style="font-size:14px; padding-left:10px">編 集</a>*@
+        <a asp-action="Create" style="font-size:14px; padding-left:15px"> 印 刷</a>
+        <div class="col-md-2 align-self-center" style="padding-left:630px;"><label asp-for="UpdateDate" class="col-md-12 text-right"> 更新日:</label></div>
+        <div class="col-md-3 align-self-center" style="padding-left:50px;">
+            <span>@Model.TraineeMaster.UpdateDate</span>
+        </div>
+    </div>
+</div>
+
+<div class=" w3-margin-top w3-gray">
+    <h5 style="text-align:center">実習生情報</h5>
+</div>
+
+<div id="parent">
+    <div id="wide">
+        <input name="TraineeId" id="TraineeId" type="hidden" class="form-control" value="@Model.TraineeMaster.TraineeId" />
+        <div class="card card-custom mx-2 mb-3">
+            <div class="card-body">
+
+                <div class="row w3-margin-top w3-gray">
+                    <div class="col col-md-12">
+                        <h5 style="text-align:center">パスポート・外国人登録情報</h5>
+                    </div>
+                </div>
+
+                <div class="row form-group" style="padding-top:10px;">
+                    <div class="col">
+                        <div class="row">
+
+                            <div class="col col-md-2"><label asp-for="PassportNo">パスポートNo</label></div>
+                            <div class="col col-md-4">
+                                <input name="PassportNo" id="PassportNo"
+                                       value="@foreach (var row in Model.traineeHistories)
+                                    {
+
+                                        @row.PassportNo
+
+                                    }" class="form-control" disabled />
+                                <span asp-validation-for="PassportNo" class="text-danger"></span>
+                            </div>
+
+                            <div class="col col-md-2"><label asp-for="PassportLimit">有効期限</label></div>
+                            <div class="col col-md-4">
+                                <input name="PassportLimit" id="PassportLimit"
+                                       value=" @foreach (var row in Model.traineeHistories)
+                                    {
+
+                                        @row.PassportLimit
+
+                                    }" class="form-control" disabled />
+                                <span asp-validation-for="PassportLimit" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group" style="padding-top:2px;">
+                    <div class="col">
+                        <div class="row">
+
+                            <div class="col col-md-2"><label asp-for="ResidentCardNo">在留カード番号</label></div>
+                            <div class="col col-md-4">
+                                <input name="ResidentCardNo" id="ResidentCardNo"
+                                       value="@foreach (var row in Model.traineeHistories)
+                                    {
+
+                                        @row.ResidentCardNo
+
+                                    }" class="form-control" disabled />
+                                <span asp-validation-for="ResidentCardNo" class="text-danger"></span>
+                            </div>
+
+                            <div class="col col-md-2"><label asp-for="ResidentCardExpireDate">在留期限満了日</label></div>
+                            <div class="col col-md-4">
+                                <input name="ResidentCardExpireDate" id="ResidentCardExpireDate"
+                                       value="@foreach (var row in Model.traineeHistories)
+                                    {
+
+                                        @row.ResidentCardExpireDate
+
+                                    }" class="form-control" disabled />
+
+                                <span asp-validation-for="ResidentCardExpireDate" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        @***********************Trainee Information Start******************************@
+
+        <div class="accordion" id="accordionExample">
+            <div class="card" style="margin:1px;">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne">実習生情報</button>
+                    </h2>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-3"><label asp-for="TraineeNo">実習生No</label></div>
+                                    <div class="col col-md-3">
+                                        <input name="TraineeNo" id="TraineeNo" value="@Model.TraineeMaster.TraineeNo" class="form-control" disabled />
+                                        <span asp-validation-for="TraineeNo" class="text-danger"></span>
+                                    </div>
+                                    <div class="col col-md-2"><label asp-for="Certification1No">認定番号</label></div>
+                                    <div class="col col-md-3">
+                                        <input name="Certification1No" id="Certification1No" value="@Model.TraineeMaster.Certification1No" class="form-control" disabled />
+                                        <span asp-validation-for="Certification1No" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-3"><label asp-for="Schlarship">期生</label></div>
+                                    <div class="col col-md-2">
+                                        <input name="Schlarship" id="Schlarship" class="form-control" value="@Model.TraineeMaster.Schlarship" disabled />
+                                        <span asp-validation-for="Schlarship" class="text-danger"></span>
+                                    </div>
+                                    <div class="col col-md-1"><label asp-for="Schlarship">期生</label></div>
+
+                                    <div class="col col-md-2"><label asp-for="DelayedEntry">入国遅れ</label></div>
+                                    <div class="col col-md-3">
+                                        <input name="DelayedEntry" id="DelayedEntry" class="form-control" value="@Model.TraineeMaster.DelayedEntry" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-3"><label asp-for="NewOldSystem">新/旧制度</label></div>
+                                    <div class="col col-md-5">
+                                        <input name="NewOldSystem" id="NewOldSystem" class="form-control" value="@Model.TraineeMaster.NewOldSystem" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:2px;">
+                            <div class="col col-md-9">
+                                <div class="row">
+                                    <div class="col col-md-4"><label asp-for="TraineeName">氏名(英)</label></div>
+                                    <div class="col col-md-6">
+                                        <input name="TraineeName" id="TraineeName" class="form-control" value="@Model.TraineeMaster.TraineeName" style="width:240px;" disabled />
+                                        <span asp-validation-for="TraineeName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-top:10px;">
+                                    <div class="col col-md-4"><label asp-for="KatakanaName">読み（カナ)</label></div>
+                                    <div class="col col-md-6">
+                                        <input name="KatakanaName" id="KatakanaName" class="form-control" value="@Model.TraineeMaster.KatakanaName" style="width:240px;" disabled />
+                                        <span asp-validation-for="KatakanaName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-top:10px;">
+                                    <div class="col col-md-4"><label asp-for="KanjiName">漢字表記</label></div>
+                                    <div class="col col-md-6">
+                                        <input name="KanjiName" id="KanjiName" class="form-control" value="@Model.TraineeMaster.KanjiName" style="width:240px;" disabled />
+                                        <span asp-validation-for="KanjiName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-top:10px;">
+                                    <div class="col col-md-4"><label asp-for="BloodTypeFlg">血液型</label></div>
+                                    <div class="col col-md-6">
+                                        <input name="BloodTypeFlg" id="BloodTypeFlg" class="form-control" value="@Model.TraineeMaster.BloodTypeFlg" style="width:240px;" disabled />
+                                        <span asp-validation-for="BloodTypeFlg" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col col-md-3 border">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="thumbnail adventure-link" style="padding:25px 30px 30px 10px;">
+                                            @*<a href="/Trainee/TraineeMaster/TraineeImage/?imagPath=@Model.TraineeMaster.TraineeImage" target="_blank">*@
+                                            <img src="/Trainee/TraineeMaster/TraineeImage/?TraineeImage=@Model.TraineeMaster.TraineeImage" id="TraineeImage" alt="img" width="120" height="130" />
+                                            @*</a>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-3"><label asp-for="SexFlag">性別</label></div>
+                                    <div class="col col-md-5 input-group-append">
+                                        <input name="SexFlag" id="SexFlag" class="form-control" value="@Model.TraineeMaster.SexFlag" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-3"><label asp-for="SpouseFlg">配偶者</label></div>
+                                    <div class="col col-md-5 input-group-append">
+                                        <input name="SpouseFlg" id="SpouseFlg" class="form-control" value="@Model.TraineeMaster.SpouseFlg" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-3"><label asp-for="BirthDate">生年月日</label></div>
+                                    <div class="col col-md-5 input-group-append">
+                                        <input type="text" class="form-control" id="BirthDate" name="BirthDate" value="@Model.TraineeMaster.BirthDate" disabled />
+                                    </div>
+                                    <div class="col col-md-1 "><label asp-for="Age" class="ctext-right">歳</label></div>
+                                    <div class="col col-md-2 ">
+                                        <input name="Age" id="Age" class="form-control" value="@Model.TraineeMaster.Age" size="10" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-3"><label asp-for="CountryId">国籍</label></div>
+                                    <div class="col col-md-2">
+                                        <input name="CountryId" id="CountryId" class="form-control" value="@Model.TraineeMaster.CountryId" size="10" disabled />
+                                        <span asp-validation-for="CountryId" class="text-danger"></span>
+                                    </div>
+                                    <div class="col col-md-3">
+                                        <input name="CountryName" id="CountryName" class="form-control"
+                                               value=" @foreach (var row in Model.countries)
+                                            {
+
+                                                @row.CountryName
+
+                                            }" size="10" disabled />
+                                        <span asp-validation-for="CountryName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-3"><label asp-for="BirthPlace">出生地</label></div>
+                                    <div class="col col-md-5">
+                                        <input name="BirthPlace" id="BirthPlace" class="form-control" value="@Model.TraineeMaster.BirthPlace" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-3"><label asp-for="TraineeName">現住所 〒</label></div>
+                                    <div class="col col-md-9">
+
+                                        <div class="row">
+                                            <div class="col col-md-1"><label asp-for="Address">〒</label></div>
+                                            <div class="col col-md-3">
+                                                <input name="Zip" id="Zip" class="form-control" value="@Model.TraineeMaster.Zip" disabled />
+                                                <span asp-validation-for="Zip" class="text-danger"></span>
+                                            </div>
+                                            <div class="col col-md-8">
+                                                <input name="Address1" id="Address1" class="form-control" value="@Model.TraineeMaster.Address1" disabled />
+                                                <span asp-validation-for="Address1" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="padding-top:10px;">
+                                            <div class="col col-md-12">
+                                                <input name="Address2" id="Address2" class="form-control" value="@Model.TraineeMaster.Address2" disabled />
+                                                <span asp-validation-for="Address2" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-3"><label asp-for="TelephoneNo">連絡先 (Tel)</label></div>
+                                    <div class="col col-md-4">
+                                        <input name="TelephoneNo" id="TelephoneNo" class="form-control" value="@Model.TraineeMaster.TelephoneNo" disabled />
+                                        <span asp-validation-for="TelephoneNo" class="text-danger"></span>
+                                    </div>
+                                    <div class="col col-md-1"><label asp-for="Email">Email</label></div>
+                                    <div class="col col-md-4">
+                                        <input name="Email" id="Email" class="form-control" value="@Model.TraineeMaster.Email" disabled />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*********************Trainee information End*************************@
+
+            @*********************Training Period Information Start*************************@
+
+            <div class="card" style="margin: 5px;">
+                <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo">実習期間情報</button>
+                    </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body">
+
+                        <div style="padding-top:10px;">
+                            <div class="row">
+                                <div class="col col-md-3"><label asp-for="Group" class="text-right">集合講習</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="GroupFrom" name="GroupFrom" value="@Model.TraineeMaster.GroupFrom" disabled />
+                                </div>
+                                <div class="col col-md-1"><label asp-for="Group" class="text-right">~</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="GroupTo" name="GroupTo" value="@Model.TraineeMaster.GroupTo" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div style="padding-top:10px;">
+                            <div class="row">
+                                <div class="col col-md-3"><label asp-for="PracticalTraining" class="text-right">実習/ 1号</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="PracticalTrainingFrom" name="PracticalTrainingFrom" value="@Model.TraineeMaster.PracticalTrainingFrom" disabled />
+                                </div>
+                                <div class="col col-md-1"><label asp-for="PracticalTraining" class="text-right">~</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="PracticalTrainingTo" name="PracticalTrainingTo" value="@Model.TraineeMaster.PracticalTrainingTo" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="padding-top:10px;">
+                            <div class="row">
+                                <div class="col col-md-3"><label asp-for="PracticalTraining2" class="text-right"> 実習/ 2号</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="PracticalTrainingFrom2" name="PracticalTrainingFrom2" value="@Model.TraineeMaster.PracticalTrainingFrom2" disabled />
+                                </div>
+                                <div class="col col-md-1"><label asp-for="PracticalTraining2" class="text-right">~</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="PracticalTrainingTo2" name="PracticalTrainingTo2" value="@Model.TraineeMaster.PracticalTrainingTo2" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="padding-top:10px;">
+                            <div class="row">
+                                <div class="col col-md-3"><label asp-for="PracticalTraining3" class="ctext-right"> 実習/ 3号</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="PracticalTrainingFrom3" name="PracticalTrainingFrom3" value="@Model.TraineeMaster.PracticalTrainingFrom3" disabled />
+                                </div>
+                                <div class="col col-md-1"><label asp-for="PracticalTraining3" class="ctext-right">~</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="PracticalTrainingTo3" name="PracticalTrainingTo3" value="@Model.TraineeMaster.PracticalTrainingTo3" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="padding-top:10px;">
+                            <div class="row">
+                                <div class="col col-md-3"><label asp-for="Technical" class="ctext-right">特定活動2年</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="TechnicalFrom" name="TechnicalFrom" value="@Model.TraineeMaster.TechnicalFrom" disabled />
+                                </div>
+                                <div class="col col-md-1"><label asp-for="Technical" class="ctext-right">~</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="TechnicalTo" name="TechnicalTo" value="@Model.TraineeMaster.TechnicalTo" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="padding-top:10px;">
+                            <div class="row">
+                                <div class="col col-md-3"><label asp-for="SpecificActivity" class="ctext-right">特定活動3年</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="SpecificActivityFrom" name="SpecificActivityFrom" value="@Model.TraineeMaster.SpecificActivityFrom" disabled />
+                                </div>
+                                <div class="col col-md-1"><label asp-for="SpecificActivity" class="ctext-right">~</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="SpecificActivityto" name="SpecificActivityto" value="@Model.TraineeMaster.SpecificActivityto" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="padding-top:10px;">
+                            <div class="row">
+                                <div class="col col-md-3"><label asp-for="SpecificNo1" class="ctext-right">特定技能</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="SpecificNo1From" name="SpecificNo1From" value="@Model.TraineeMaster.SpecificNo1From" disabled />
+                                </div>
+                                <div class="col col-md-1"><label asp-for="SpecificNo1" class="ctext-right">~</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="SpecificNo1To" name="SpecificNo1To" value="@Model.TraineeMaster.SpecificNo1To" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="padding-top:10px;">
+                            <div class="row">
+                                <div class="col col-md-3"><label asp-for="SpecificNo2" class="ctext-right">特定技能 2</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="SpecificNo2From" name="SpecificNo2From" value="@Model.TraineeMaster.SpecificNo2From" disabled />
+                                </div>
+                                <div class="col col-md-1"><label asp-for="SpecificNo2" class="ctext-right">~</label></div>
+                                <div class="col col-md-4">
+                                    <input type="text" class="form-control" id="SpecificNo2To" name="SpecificNo2To" value="@Model.TraineeMaster.SpecificNo2To" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @*********************Training Period Information End*************************@
+
+            @*********************Scanned Image Information Start*************************@
+            <div class="card" style="margin: 1px;">
+                <div class="card-header" id="headingFour">
+                    <h2 class="mb-0">
+                        <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour">スキャン画像</button>
+                    </h2>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+
+                    <div style="padding-top:5px; ">
+                        <div class="row">
+                            <div class="col col-md-3" style=" padding-bottom:20px; "><label asp-for="PassportImg" class="text-left">パスポート</label></div>
+                            <div class="col col-md-3 thumbnail" style="padding:10px 10px 10px 10px;">
+                                @*<button type="button" id="btn1"> 参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/PassportImg/?PassportImg=@row.PassportImg" id="PassportImg" alt="パスポート" width="50" height="50" />
+                                }
+                            </div>
+
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="LandingPermit" class="text-left">上陸許可</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/LandingPermit/?LandingPermit=@row.LandingPermit" id="LandingPermit" alt="上陸許可" width="50" height="50" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-top:5px;">
+                        <div class="row">
+                            <div class="col col-md-3" style="padding-bottom:20px;"><label asp-for="TraineevisaImg1" class="text-left">ビザ</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                    @foreach (var row in Model.traineeHistories)
+                                    {
+                                        <img src="/Trainee/TraineeMaster/TraineevisaImg1/?TraineevisaImg1=@row.TraineevisaImg1" id="TraineevisaImg1" alt="ビザ" width="50" height="50" />
+                                    }
+                            </div>
+
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="RegistrationImg2" class="text-left">指定書</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/RegistrationImg2/?RegistrationImg2=@row.RegistrationImg2" id="RegistrationImg2" alt="指定書" width="50" height="50" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-top:5px;">
+                        <div class="row">
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="DesactvisaImg1" class="text-left">在留カード(表)1年目</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/DesactvisaImg1/?DesactvisaImg1=@row.DesactvisaImg1" id="DesactvisaImg1" alt="在留カード(表)1年目" width="50" height="50" />
+                                }
+                            </div>
+
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="DesactvisaImg2" class="text-left small">在留カード（表）１</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/DesactvisaImg2/?DesactvisaImg2=@row.DesactvisaImg2" id="DesactvisaImg2" alt="在留カード（表）１" width="50" height="50" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-top:5px;">
+                        <div class="row">
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="Residentcardyear2" class="text-left">在留カード(表)２年目</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/Residentcardyear2/?Residentcardyear2=@row.Residentcardyear2" id="Residentcardyear2" alt="在留カード(表)２年目" width="50" height="50" />
+                                }
+                            </div>
+
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="ResidentCard2" class="text-left">在留カード（表）２</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/ResidentCard2/?ResidentCard2=@row.ResidentCard2" id="ResidentCard2" alt="在留カード（表）２" width="50" height="50" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-top:5px;">
+                        <div class="row">
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="Residentcardyear3" class="text-left">在留カード(表)３年目</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/Residentcardyear3/?Residentcardyear3=@row.Residentcardyear3" id="Residentcardyear3" alt="在留カード(表)３年目" width="50" height="50" />
+                                }
+                            </div>
+
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="Residentcard3" class="text-left">在留カード（表）３</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/Residentcard3/?Residentcard3=@row.Residentcard3" id="Residentcard3" alt="在留カード（表）３" width="50" height="50" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-top:5px;">
+                        <div class="row">
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="Residentcardyear4" class="text-left">在留カード(表)４年目</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/Residentcardyear4/?Residentcardyear4=@row.Residentcardyear4" id="Residentcardyear4" alt="在留カード(表)４年目" width="50" height="50" />
+                                }
+                            </div>
+
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="Residentcard4" class="text-left">在留カード（表）4</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/Residentcard4/?Residentcard4=@row.Residentcard4" id="Residentcard4" alt="在留カード（表）4" width="50" height="50" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-top:5px;">
+                        <div class="row">
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="Residentcardyesr5" class="text-left">在留カード(表)5年目</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/Residentcardyesr5/?Residentcardyesr5=@row.Residentcardyesr5" id="Residentcardyesr5" alt="在留カード(表)5年目" width="50" height="50" />
+                                }
+                            </div>
+
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="Residentcard5" class="text-left">在留カード（表）5</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/Residentcard5/?Residentcard5=@row.Residentcard5" id="Residentcard5" alt="在留カード（表）5" width="50" height="50" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-top:5px;">
+                        <div class="row">
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="Other1" class="text-left">その他</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/Other1/?Other1=@row.Other1" id="Other1" alt="その他" width="50" height="50" />
+                                }
+                            </div>
+
+                            <div class="col col-md-3" style=" padding-bottom:20px;"><label asp-for="Other2" class="text-left">その他</label></div>
+                            <div class="col col-md-3">
+                                @*<button type="button" id="btn1">参照</button>*@
+                                @foreach (var row in Model.traineeHistories)
+                                {
+                                    <img src="/Trainee/TraineeMaster/Other2/?Other2=@row.Other2" id="Other2" alt="その他" width="50" height="50" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            @*********************Scanned Image Information End*************************@
+
+            @*************************************Document Information Start*****************************************@
+
+            @*********************Planning Information Start*************************@
+
+            <div class="card" style="margin:1px;">
+                <div class="card-header" id="headingThree">
+                    <h2 class="mb-0">
+                        <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree">ドキュメント</button>
+                    </h2>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+
+                    <div class="card-body">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#description1" aria-selected="true" role="tab" aria-controls="description1">計画情報</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#description2" aria-selected="false" role="tab" aria-controls="description2">検定情報</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content ">
+                            <div class="tab-pane active" id="description1" role="tabpanel">
+
+
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col col-md-4" style="padding-bottom: 10px;">
+                                            <label asp-for="TraineeName" class="ctext-right">認定計画NO</label>
+                                        </div>
+                                        <div class="col col-md-4" style="padding-bottom: 10px;">
+                                            <label asp-for="TraineeName" class="ctext-right">認定年月日</label>
+                                        </div>
+                                        <div class="col col-md-4" style="padding-bottom: 10px;">
+                                            <label asp-for="TraineeName" class="ctext-right">期間</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="padding-top:10px;">
+                                    <div class="col border border-warning" style="background-color:lightgoldenrodyellow">
+
+                                        <div class="row ">
+                                            <div class="col col-md-1" style="padding-top:10px;"><label asp-for="Certification1" class="ctext-right">認</label></div>
+                                            <div class="col col-md-3" style="padding-top:10px;">
+                                                <input name="Certification1No" id="Certification1No" class="form-control" value="@Model.TraineeMaster.Certification1No" disabled />
+                                                <span asp-validation-for="Certification1No" class="text-danger"></span>
+                                                @*<asp:RequiredFieldValidator runat="server" id="TraineeName" controltovalidate="txtName" errormessage="Please enter your name!" />*@
+                                            </div>
+                                            <div class="col col-md-4  input-group-append" style="padding-top:10px;">
+                                                <input type="text" class="form-control" id="Certification1Date" name="Certification1Date" value="@Model.TraineeMaster.Certification1Date" disabled />
+                                                <span asp-validation-for="Certification1Date" class="text-danger"></span>
+                                            </div>
+                                            <div class="col col-md-4 input-group-append" style="padding-top:10px;">
+                                                <input type="text" class="form-control" id="Certification1From" name="Certification1From" value="@Model.TraineeMaster.Certification1From" disabled />
+                                                <span asp-validation-for="Certification1From" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col col-md-12">
+
+                                                <div class="row">
+                                                    <div class="col col-md-2">
+                                                    </div>
+                                                    <div class="col col-md-7" style="padding-top:5px;">
+                                                        <p style="text-align:left;">「期間」開始日は「集合講習」終了日+ 1日</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col col-md-1" style="padding-bottom: 10px; padding-top:5px;">
+                                                    </div>
+                                                    <div class="col col-md-7" style="padding-bottom: 10px;">
+                                                        <p style="text-align:left;">「期間」終了日は「実習/ 1号」終了日</p>
+                                                    </div>
+                                                    <div class="col col-md-4 input-group-append" style="padding-bottom: 10px; ">
+                                                        <input type="text" class="form-control" id="Certification1To" name="Certification1To" value="@Model.TraineeMaster.Certification1To" disabled />
+                                                        <span asp-validation-for="Certification1To" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="padding-top:10px;">
+                                    <div class="col border border-info" style="background-color:lightblue">
+
+                                        <div class="row ">
+                                            <div class="col col-md-1" style="padding-top:10px;"><label asp-for="Certification2" class="ctext-right">認</label></div>
+                                            <div class="col col-md-3" style="padding-top:10px;">
+                                                <input name="Certification2No" id="Certification2No" class="form-control" value="@Model.TraineeMaster.Certification2No" disabled />
+                                                <span asp-validation-for="Certification2No" class="text-danger"></span>
+                                                @*<asp:RequiredFieldValidator runat="server" id="TraineeName" controltovalidate="txtName" errormessage="Please enter your name!" />*@
+                                            </div>
+                                            <div class="col col-md-4  input-group-append" style="padding-top:10px;">
+                                                <input type="text" class="form-control" id="Certification2Date" name="Certification2Date" value="@Model.TraineeMaster.Certification2Date" disabled />
+                                                <span asp-validation-for="Certification2Date" class="text-danger"></span>
+                                            </div>
+                                            <div class="col col-md-4 input-group-append" style="padding-top:10px;">
+                                                <input type="text" class="form-control" id="Certification2From" name="Certification2From" value="@Model.TraineeMaster.Certification2From" disabled />
+                                                <span asp-validation-for="Certification2From" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col col-md-12">
+
+                                                <div class="row">
+                                                    <div class="col col-md-2">
+                                                    </div>
+                                                    <div class="col col-md-7" style="padding-top:5px;">
+                                                        <p style="text-align:left;">「期間」開始日は「実習1号」終了日+ 1日</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col col-md-1" style="padding-bottom: 10px; padding-top:5px;">
+                                                    </div>
+                                                    <div class="col col-md-7" style="padding-bottom: 10px;">
+                                                        <p style="text-align:left;">「期間」終了日は「実習2号」終了日</p>
+                                                    </div>
+                                                    <div class="col col-md-4 input-group-append" style="padding-bottom: 10px; ">
+                                                        <input type="text" class="form-control" id="Certification2To" name="Certification2To" value="@Model.TraineeMaster.Certification2To" disabled>
+                                                        <span asp-validation-for="Certification2To" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="padding-top:10px;">
+                                    <div class="col border border-info" style="background-color:lightblue">
+
+                                        <div class="row ">
+                                            <div class="col col-md-1" style="padding-top:10px;"><label asp-for="Certification3" class="ctext-right">認</label></div>
+                                            <div class="col col-md-3" style="padding-top:10px;">
+                                                <input name="Certification3No" id="Certification3No" class="form-control" value="@Model.TraineeMaster.Certification3No" disabled />
+                                                <span asp-validation-for="Certification3No" class="text-danger"></span>
+                                                @*<asp:RequiredFieldValidator runat="server" id="TraineeName" controltovalidate="txtName" errormessage="Please enter your name!" />*@
+                                            </div>
+                                            <div class="col col-md-4  input-group-append" style="padding-top:10px;">
+                                                <input type="text" class="form-control" id="Certification3Date" name="Certification3Date" value="@Model.TraineeMaster.Certification3Date" disabled />
+                                                <span asp-validation-for="Certification3Date" class="text-danger"></span>
+                                            </div>
+                                            <div class="col col-md-4 input-group-append" style="padding-top:10px;">
+                                                <input type="text" class="form-control" id="Certification3From" name="Certification3From" value="@Model.TraineeMaster.Certification3From" disabled />
+                                                <span asp-validation-for="Certification3From" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col col-md-12">
+
+                                                <div class="row">
+                                                    <div class="col col-md-2">
+                                                    </div>
+                                                    <div class="col col-md-7" style="padding-top:5px;">
+                                                        <p style="text-align:left;">「期間」開始日は「実習/3号」終了日+ 1日</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col col-md-1" style="padding-bottom: 10px; padding-top:5px;">
+                                                    </div>
+                                                    <div class="col col-md-7" style="padding-bottom: 10px;">
+                                                        <p style="text-align:left;">「期間」終了日は「実習/ 3号」終了日</p>
+
+                                                    </div>
+                                                    <div class="col col-md-4 input-group-append" style="padding-bottom: 10px; ">
+                                                        <input type="text" class="form-control" id="Certification3To" name="Certification3To" value="@Model.TraineeMaster.Certification3To" disabled />
+                                                        <span asp-validation-for="Certification3To" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            @*********************Planning Information End*************************@
+
+                            @*********************Test Information Start*************************@
+
+                            <div class="tab-pane" id="description2" role="tabpanel" aria-labelledby="description2">
+
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col col-md-3"><label asp-for="Testname" class="ctext-right">検定名</label></div>
+                                        <div class="col col-md-9">
+                                            <input type="text" value="@Model.TraineeMaster.Testname" name="Testname" class="form-control" id="Testname" disabled />
+                                            <span asp-validation-for="Testname" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card text-white bg-light mb-3">
+                                    <div class="card-body">
+
+                                        <div class="form-group" style="padding-top:0.5px;">
+                                            <div class="row">
+                                                <div class="col col-md-3"><label asp-for="Classname1" class="ctext-right">級名</label></div>
+                                                <div class="col col-md-4">
+                                                    <input type="text" value="@Model.TraineeMaster.Classname1" name="Classname1" class="form-control" id="Classname1" disabled />
+                                                    <span asp-validation-for="Classname1" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group" style="padding-top:0.5px;">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col col-md-3"><label asp-for="Passdate">合格日</label></div>
+                                                    <div class="col col-md-4 input-group-append">
+                                                        <input type="text" class="form-control" id="Passdate" name="Passdate" value="@Model.TraineeMaster.Passdate" disabled />
+                                                        <span asp-validation-for="Passdate" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="padding-top:0.5px;">
+                                            <div class="row">
+                                                <div class="col col-md-3"><label asp-for="Result" class="ctext-right">合否結果</label></div>
+                                                <div class="col col-md-4">
+                                                    <input type="text" value="@Model.TraineeMaster.Result" name="Result" class="form-control" id="Result" disabled />
+                                                    <span asp-validation-for="Result" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="card text-white bg-light mb-3" style="max-width: 100rem;">
+                                    <div class="card-body">
+
+                                        <div class="form-group" style="padding-top:0.5px;">
+                                            <div class="row">
+                                                <div class="col col-md-3"><label asp-for="Classname2" class="ctext-right">級名</label></div>
+                                                <div class="col col-md-4">
+                                                    <input type="text" value="@Model.TraineeMaster.Classname2" name="Classname2" class="form-control" id="Classname2" disabled />
+                                                    <span asp-validation-for="Classname2" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group" style="padding-top:0.5px;">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col col-md-3"><label asp-for="Passdate2">合格日</label></div>
+                                                    <div class="col col-md-4 input-group-append">
+                                                        <input type="text" class="form-control" id="Passdate2" name="Passdate2" value="@Model.TraineeMaster.Passdate2" disabled />
+                                                        <span asp-validation-for="Passdate2" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="padding-top:0.5px;">
+                                            <div class="row">
+                                                <div class="col col-md-3"><label asp-for="Result2" class="ctext-right">合否結果</label></div>
+                                                <div class="col col-md-4">
+                                                    <input type="text" class="form-control" id="Result2" name="Result2" value="@Model.TraineeMaster.Result2" disabled />
+                                                    <span asp-validation-for="Result2" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*********************Test Information End*************************@
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*********************Immigration Information Start*************************@
+    <div id="narrow">
+
+        <div class="accordion" id="accordionExample1">
+            <div class="card" style="margin: 1px;">
+                <div class="card-header" id="headingOne1">
+                    <h2 class="mb-0">
+                        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne1">入国情報</button>
+                    </h2>
+                </div>
+
+                <div id="collapseOne1" class="collapse show" aria-labelledby="headingOne1" data-parent="#accordionExample1">
+                    <div class="card-body">
+
+                        <div class="row form-group" style="padding-top:1px;">
+
+                            <div class="col col-md-6">
+
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="EntranceDate">入国予定日</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="EntranceDate" name="EntranceDate" value="@Model.TraineeMaster.EntranceDate" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="EntryDate">入国日</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="EntryDate" name="EntryDate" value="@Model.TraineeMaster.EntryDate" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="HiringDate">入職日</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="HiringDate" name="HiringDate" value="@Model.TraineeMaster.HiringDate" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="ReturnDate">2号帰国日</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="ReturnDate" name="ReturnDate" value="@Model.TraineeMaster.ReturnDate" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="NewSystemstartDate">新制度開始日</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="NewSystemstartDate" name="NewSystemstartDate" value="@Model.TraineeMaster.NewSystemstartDate" disabled />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col col-md-6">
+
+                                <div class="row" style="padding-bottom:30px;">
+                                    <div class="col col-md-5 group1"><label asp-for="Scheduledstartdateforboth">3号<br />計両開始予定日</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="Scheduledstartdateforboth" name="Scheduledstartdateforboth" value="@Model.TraineeMaster.Scheduledstartdateforboth" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="ReturnPlanDate1">ー時帰国期間</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="ReturnPlanDate1" name="ReturnPlanDate1" value="@Model.TraineeMaster.ReturnPlanDate1" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-bottom:30px;">
+                                    <div class="col col-md-5"></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="ReturnPlanDate2" name="ReturnPlanDate2" value="@Model.TraineeMaster.ReturnPlanDate2" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="TotalStartDate">3号計両開始日</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="TotalStartDate" name="TotalStartDate" value="@Model.TraineeMaster.TotalStartDate" disabled />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+
+                            <div class="col col-md-6">
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="Immigrationstatus">入国状況</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="Immigrationstatus" name="Immigrationstatus" value="@Model.TraineeMaster.Immigrationstatus" disabled />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col col-md-6">
+
+                                <div class="row" style="padding-bottom:10px; padding-right:5px;">
+                                    <div class="col col-md-5"><label asp-for="ReturnDate">3号帰国日</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="Returndate3" name="Returndate3" value="@Model.TraineeMaster.Returndate3" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="Specificskillstart1">特定技能1開始</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="Specificskillstart1" name="Specificskillstart1" value="@Model.TraineeMaster.Specificskillstart1" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="SpecificskillRhome1">特定技能1帰国</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="SpecificskillRhome1" name="SpecificskillRhome1" value="@Model.TraineeMaster.SpecificskillRhome1" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="Specificskillstart2">特定技能2開始</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="Specificskillstart2" name="Specificskillstart2" value="@Model.TraineeMaster.Specificskillstart2" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-5"><label asp-for="SpecificskillRhome2">特定技能2帰国</label></div>
+                                    <div class="col col-md-7 input-group-append">
+                                        <input type="text" style="font-size: 15px;" class="form-control" id="SpecificskillRhome2" name="SpecificskillRhome2" value="@Model.TraineeMaster.SpecificskillRhome2" disabled />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col col-md-6">
+                            <div class="row" style="padding-bottom:10px;">
+                                <div class="col col-md-5"><label asp-for="PositionStatus">ボジション</label></div>
+                                <div class="col col-md-7 input-group-append">
+                                    <input type="text" style="font-size: 15px;" class="form-control" id="PositionStatus" name="PositionStatus" value="@Model.TraineeMaster.PositionStatus" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @*********************Immigration Information End*************************@
+
+            @*********************Accepting Company Start*************************@
+            <div class="card" style="margin:1px;">
+                <div class="card-header" id="headingTwo1">
+                    <h2 class="mb-0">
+                        <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo1">受入企業情報</button>
+                    </h2>
+                </div>
+                <div id="collapseTwo1" class="collapse " aria-labelledby="headingTwo1" data-parent="#accordionExample1">
+                    <div class="card-body">
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-4"><label asp-for="AcceptingCompanyCode">受入企業CD</label></div>
+                                    <div class="col col-md-8">
+                                        <input name="AcceptingCompanyCode" id="AcceptingCompanyCode" class="form-control"
+                                               value="@foreach (var row in Model.acceptingCompanies)
+                                    {
+
+                                        @row.AcceptingCompanyCode
+
+                                    }" disabled />
+                                        <span asp-validation-for="AcceptingCompanyCode" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row" style="padding-bottom:10px;">
+                                    <div class="col col-md-4"><label asp-for="AcceptiingCompanyName">受入企業名</label></div>
+                                    <div class="col col-md-8">
+                                        <input name="AcceptiingCompanyName" id="AcceptiingCompanyName" class="form-control"
+                                               value="@foreach (var row in Model.acceptingCompanies)
+                                    {
+
+                                        @row.AcceptiingCompanyName
+
+                                    }" disabled />
+                                        <span asp-validation-for="AcceptiingCompanyName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"><label asp-for="Address">所在地 </label></div>
+                                    <div class="col col-md-1"><label asp-for="Zip">〒</label></div>
+                                    <div class="col col-md-7">
+                                        <input name="Zip" id="Zip" class="form-control"
+                                               value="@foreach (var row in Model.acceptingCompanies)
+                                    {
+
+                                        @row.Zip
+
+                                    }" disabled />
+                                        <span asp-validation-for="Zip" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"></div>
+                                    <div class="col col-md-8">
+                                        <input name="Address1" id="Address1" class="form-control"
+                                               value="@foreach (var row in Model.acceptingCompanies)
+                                    {
+
+                                        @row.Address1
+
+                                    }" disabled />
+                                        <span asp-validation-for="Address1" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"></div>
+                                    <div class="col col-md-8">
+                                        <input name="Address2" id="Address2" class="form-control"
+                                               value="@foreach (var row in Model.acceptingCompanies)
+                                    {
+
+                                        @row.Address2
+
+                                    }" disabled />
+                                        <span asp-validation-for="Address2" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"><label asp-for="TelephoneNo">連絡先 (TEL)</label></div>
+                                    <div class="col col-md-8">
+                                        <input name="TelephoneNo" id="TelephoneNo" class="form-control"
+                                               value="@foreach (var row in Model.acceptingCompanies)
+                                    {
+
+                                        @row.TelephoneNo
+
+                                    }" disabled />
+                                        <span asp-validation-for="TelephoneNo" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"><label asp-for="Fax">Fax</label></div>
+                                    <div class="col col-md-8">
+                                        <input name="Fax" id="Fax" class="form-control"
+                                               value="@foreach (var row in Model.acceptingCompanies)
+                                    {
+
+                                        @row.Fax
+
+                                    }" disabled />
+                                        <span asp-validation-for="Fax" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"><label asp-for="Business">業種</label></div>
+                                    <div class="col col-md-8">
+                                        <input name="Business" id="Business" class="form-control"
+                                               value="@foreach (var row in Model.acceptingCompanies)
+                                    {
+
+                                        @row.Business
+
+                                    }" disabled />
+                                        <span asp-validation-for="Business" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"><label asp-for="WorkName">作業名</label></div>
+                                    <div class="col col-md-8">
+                                        <input name="WorkName" id="WorkName" class="form-control"
+                                               value="@foreach (var row in Model.works)
+                                    {
+
+                                        @row.WorkName
+
+                                    }" disabled />
+                                        <span asp-validation-for="WorkName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"><label asp-for="IpNotificationNo">実習実施者届出受理番号</label></div>
+                                    <div class="col col-md-8">
+                                        <input name="IpNotificationNo" id="IpNotificationNo" class="form-control"
+                                               value="@foreach (var row in Model.acceptingCompanies)
+                                    {
+
+                                        @row.IpNotificationNo
+
+                                    }" disabled />
+                                        <span asp-validation-for="IpNotificationNo" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"><label asp-for="Memo3">偖考</label></div>
+                                    <div class="col col-md-8">
+                                        <input name="Memo3" id="Memo3" class="form-control" value="@Model.TraineeMaster.Memo3" style="width:300px;height:300px;" disabled />
+                                        <span asp-validation-for="Memo3" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @*********************Accepting Company ENd*************************@
+
+            @*********************Sending Company Start*************************@
+            <div class="card" style="margin:1px;">
+                <div class="card-header" id="headingThree">
+                    <h2 class="mb-0">
+                        <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree1">送出欄開情</button>
+                    </h2>
+                </div>
+                <div id="collapseThree1" class="collapse" aria-labelledby="headingThree1" data-parent="#accordionExample1">
+                    <div class="card-body">
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"><label asp-for="SendingCompanyCode">送出標関CD</label></div>
+                                    <div class="col col-md-8">
+                                        <input name="SendingCompanyCode" id="SendingCompanyCode" class="form-control"
+                                               value="@foreach (var row in Model.sendingCompany)
+                                    {
+
+                                        @row.SendingComapny
+
+                                    }" size="10" disabled />
+                                        <span asp-validation-for="SendingCompanyCode" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"><label asp-for="SendingCompanyName">送出機名</label></div>
+                                    <div class="col col-md-8">
+                                        <input name="SendingCompanyName" id="SendingCompanyName" class="form-control"
+                                               value="@foreach (var row in Model.sendingCompany)
+                                    {
+
+                                        @row.SendingName
+
+                                    }" disabled />
+                                        <span asp-validation-for="SendingCompanyName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-4"><label asp-for="Memo2">メモ</label></div>
+                                    <div class="col col-md-8">
+                                        <input name="Memo2" id="Memo2" class="form-control" value="@Model.TraineeMaster.Memo2" style="width:300px;height:300px;" disabled />
+                                        <span asp-validation-for="Memo2" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @*********************Sending Company End*************************@
+
+            <div class="card" style="margin:1px;">
+                <div class="card-header" id="headingThree11">
+                    <h2 class="mb-0">
+                        <button type="button" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree11">メモ</button>
+                    </h2>
+                </div>
+                <div id="collapseThree11" class="collapse" aria-labelledby="headingThree11" data-parent="#accordionExample1">
+                    <div class="card-body">
+
+                        <div class="row form-group" style="padding-top:1px;">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col col-md-1"></div>
+                                    <div class="col col-md-2"><label asp-for="Memo1">メモ</label></div>
+                                    <div class="col col-md-9">
+                                        <input name="Memo1" id="Memo1" class="form-control" value="@Model.TraineeMaster.Memo1" style="width:300px;height:300px;" disabled />
+                                        <span asp-validation-for="Memo1" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $('#bologna-list a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+</script>
+
+@***************************************************Back Button**************************************************@
+<script>
+    function goBack() {
+        window.location.href = "/Trainee/TraineeMaster/Index";
+    }
+</script>
+
+<div id="ImageModal" class="modal" tabindex="-1" role="dialog">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="Image">
+    <div id="caption"></div>
+</div>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("PassportImg");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("LandingPermit");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("TraineevisaImg1");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("RegistrationImg2");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("DesactvisaImg1");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("DesactvisaImg2");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("Residentcardyear2");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("ResidentCard2");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("Residentcardyear3");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("Residentcard3");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("Residentcardyear4");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("Residentcard4");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("Residentcardyesr5");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("Residentcard5");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("Other1");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+<script>
+    var modal = document.getElementById("ImageModal");
+
+    var img = document.getElementById("Other2");
+    var modalImg = document.getElementById("Image");
+    var captionText = document.getElementById("caption");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

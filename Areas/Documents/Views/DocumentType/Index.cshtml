@@ -1,0 +1,144 @@
+﻿@model IEnumerable<GloableCommunication.DbModels.DocumentType>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+    $(document).ready(function () {
+        $('#dtDesign').DataTable();
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+<h5>Document Type</h5>
+
+<p>
+    <a href="#" class="btn btn-primary" onclick="showAddOrEditUi(0)">Create New</a>
+</p>
+<table id="dtDesign" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.DocumentTypeId)*@#
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.InsitutteId)*@Document Type Name
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.DocumentTypeParentId)
+                </th>*@
+            <!--<th>-->
+                @*@Html.DisplayNameFor(model => model.DocumentTypeName)*@<!--Institute
+            </th>-->
+            @*<th>
+                    @Html.DisplayNameFor(model => model.DocumentTypeDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocumentTypeIsDelete)
+                </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentTypeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentTypeName)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.DocumentTypeParentId)
+                    </td>*@
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.InstituteName)
+                </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.DocumentTypeDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DocumentTypeIsDelete)
+                    </td>*@
+                <td>
+                    <a href="#" class="btn btn-primary" onclick="showAddOrEditUi(@item.DocumentTypeId)">Edit</a>
+                    <a class="btn btn-danger" onclick="DeleteConfirmation('/Documents/DocumentType/Delete/?Id=@item.DocumentTypeId',null,null,true, 'Do you want to delete?','Permanently erase this data')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@*Add or Edit model*@
+
+<div id="AddOrEditDocument" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Document Type Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="formArea">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="SaveData()" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function showAddOrEditUi(id) {
+        $('#AddOrEditDocument').modal(); //open the model
+        $("#formArea").html(""); // Clear existing are
+
+        $.ajax({
+            method: "GET",
+            url: "/Documents/DocumentType/AddorEditView/" + id,
+        })
+            .done(function (msg) {
+                $("#formArea").html(msg);
+
+            });
+    }
+
+
+    function SaveData() {
+
+        let postData = new FormData();
+        postData.append('DocumentTypeId', $("#DocumentTypeId").val());
+        postData.append('InsitutteId', $("#InsitutteId").val());
+        postData.append('DocumentTypeParentId', $("#DocumentTypeParentId").val());
+        if (!IsFilled("DocumentTypeName", "Document Type Name", "Please fill the document type name")) {
+            return;
+        }
+        postData.append('DocumentTypeName', $("#DocumentTypeName").val());
+        postData.append('DocumentTypeDescription', $("#DocumentTypeDescription").val());
+        postData.append('DocumentTypeIsDelete', $("#DocumentTypeIsDelete").val());
+        postData.append('FolderPath', $("#FolderPath").val());
+
+        $.ajax({
+            method: "POST",
+            url: "/Documents/DocumentType/SaveData/",
+            data: postData,
+            contentType: false,
+            processData: false,
+        })
+            .done(function (msg) {
+                $('#AddOrEditDocument').modal('hide')
+                alert("Data has saved");
+                location.reload();
+            });
+    }
+
+</script>
+

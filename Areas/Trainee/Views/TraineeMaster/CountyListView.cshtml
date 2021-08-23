@@ -1,0 +1,126 @@
+﻿@model IEnumerable<GloableCommunication.DbModels.Country>
+
+@{
+    ViewData["Title"] = "CountyListView";
+    Layout = null;
+}
+
+<div>
+    <div>
+        <button class="w3-button w3-green"
+                onclick="ReturnBtn()"><i class="fa fa-arrow-left"></i></button>
+    </div>
+    <div>
+        <a asp-action="Create" style="font-size:15px; padding-left:10px">戻る</a>
+
+    </div>
+</div>
+
+<style>
+    tr:hover td {
+        background-color: #0095ff;
+        cursor: pointer;
+    }
+
+    td .selectRow {
+        border: 1px #DDD solid;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .selected {
+        background-color: #0095ff;
+        color: #FFF;
+    }
+
+    .modal-nw {
+        max-width: 50% !important;
+        align-self: center !important;
+    }
+</style>
+
+
+<div class=" w3-margin-top w3-gray">
+    <h5 style="text-align:center">国一覧</h5>
+</div>
+
+@*<div class="card">*@
+<table id="countryTable" class="table table-bordered table-hover table-sm" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th style="display:none;">
+                #
+            </th>
+            <th>
+                国 CD
+            </th>
+            <th>
+                国の名前
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="row-click">
+                <td style="display:none">
+                    @Html.DisplayFor(modelItem => item.CountryId)
+                </td>
+                <td class="selectRow">
+                    @Html.DisplayFor(modelItem => item.CountryCode)
+                </td>
+                <td class="selectRow">
+                    @Html.DisplayFor(modelItem => item.CountryName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(ModalBtn).prop("disabled", true);
+
+    $("#countryTable tr").click(function () {
+        $(this).addClass('selected').siblings().removeClass('selected');
+        var nameValue = $(this).find('td:nth-child(3)').html();
+        var nameValueTrim = nameValue.trim();
+        $("input[name='CountryName']").val(nameValueTrim);
+        var codeValue = $(this).find('td:nth-child(2)').html();
+        var codeValueTrim = codeValue.trim();
+        $("input[name='CountryCode']").val(codeValueTrim);
+        var idValue = $(this).find('td:nth-child(1)').html();
+        $("input[name='CountryId']").val(idValue);
+        $(ModalBtn).prop("disabled", false);
+
+    });
+
+    function ReturnBtn() {
+        $("input[name='CountryId']").val('');
+        $("input[name='CountryCode']").val('');
+        $("input[name='CountryName']").val('');
+        $('#listViewModal').modal('hide');
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#countryTable').DataTable({
+            "lengthMenu": [5, 10, 15, 20, 30],
+            "language": {
+                "search": "検索:",
+                "paginate": {
+                    "first": "一ページ目",
+                    "last": "最後のページ",
+                    "next": "次へ",
+                    "previous": "前へ"
+                },
+                "lengthMenu": " _MENU_ 件表示",
+                "info": "検索結果 _TOTAL_ 以上 のうち _START_ ~ _END_件",
+                "infoEmpty": "検索結果 0 以上 のうち 0 ~ 0件",
+                "emptyTable": "条件に一致する結果は見つかりませんでした",
+                "zeroRecords": "条件に一致する結果は見つかりませんでした",
+            },
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>

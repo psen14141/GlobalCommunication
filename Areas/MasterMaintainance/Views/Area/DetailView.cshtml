@@ -1,0 +1,198 @@
+﻿@model GloableCommunication.Areas.MasterMaintainance.Models.ViewModels.AreaViewModel
+
+@{
+    ViewData["Title"] = "DetailView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div>
+    <button class="w3-button w3-green" onclick="goBack()"><i class="fa fa-arrow-left"></i></button>
+    <button class="w3-button w3-light-blue" onclick="PrintDiv()"><i class="fa fa-print"></i></button>
+</div>
+
+<div class="form-group">
+    <div class="row">
+        <a asp-action="Create" style="font-size:14px; padding-left:10px">戻 る</a>
+        <a asp-action="Create" style="font-size:14px; padding-left:10px"> 印 刷</a>
+
+        <div class="col-md-2 align-self-center" style="padding-left:630px;"><label asp-for="Area" class="col-md-12 text-right"> 更新日:</label></div>
+        <div class="col-md-4 align-self-center" style="padding-left:50px;">
+            <input type="text" name="UpdateDate" value="@Model.Area.UpdateDateTime" id="UpdateDate" class="form-control" style="border: none; width:100px;" />
+        </div>
+    </div>
+</div>
+
+
+<div id="divcontent">
+    <dl class="row">
+        <dt class="col-sm-2">
+            地域 CD
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Area.AreaCode
+        </dd>
+        <dt class="col-sm-2">
+            地域 名
+        </dt>
+        <dd class="col-sm-10">
+            <span style="color:brown;">@Model.Area.AreaName</span>
+        </dd>
+        <dt class="col-sm-2">
+            日時の更新
+        </dt>
+        <dd class="col-sm-10">
+            <span style="color:brown;">@Model.Area.UpdateDateTime</span>
+        </dd>
+        <dt class="col-sm-2">
+            日付と時刻を挿入
+        </dt>
+        <dd class="col-sm-10">
+            <span style="color:brown;">@Model.Area.InsertDateTime</span>
+        </dd>
+        <dt class="col-sm-2">
+            国
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var row in Model.Countries)
+            {
+
+                @row.CountryName
+
+            }
+
+        </dd>
+        </dl>
+
+</div>
+
+
+        @***************************************************Back Button**************************************************@
+        <script>
+            function goBack() {
+                window.location.href = "/MasterMaintainance/Area/Index";
+            }
+        </script>
+
+
+        @************************************************Close Modal**************************************************************@
+        <script>
+            function CloseModal() {
+                $('#listViewModal').modal('hide');
+            }
+        </script>
+
+
+
+        @******************************************Clear Data*******************************************************@
+        <script>
+            function ClearData() {
+                document.getElementById("SearchForm").reset();
+            }
+        </script>
+
+
+        @***************************************************Row Count**************************************************@
+        <script language="JavaScript">
+            var Rows = document.getElementById('dtDesign').getElementsByTagName('tr');
+            var RowCount = Rows.length - 1;
+            document.getElementById("RowCount").value = RowCount;
+        </script>
+
+        @***************************************************Excel File**************************************************@
+
+        <script>
+            function exportData() {
+
+                var table = document.getElementById("dtDesign");
+                var rows = [];
+                for (var i = 0, row; row = table.rows[i]; i++) {
+                    column1 = row.cells[0].innerText;
+                    column2 = row.cells[1].innerText;
+                    column3 = row.cells[2].innerText;
+                    column4 = row.cells[3].innerText;
+                    column5 = row.cells[4].innerText;
+
+                    rows.push(
+                        [
+                            column1,
+                            column2,
+                            column3,
+                            column4,
+                            column5
+                        ]
+                    );
+                }
+                csvContent = "data:text/csv;charset=utf-8,";
+                rows.forEach(function (rowArray) {
+                    row = rowArray.join(",");
+                    csvContent += row + "\r\n";
+                });
+
+                var encodedUri = encodeURI(csvContent);
+                var link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "受入企業一覧.csv");
+                document.body.appendChild(link);
+                link.click();
+            }
+        </script>
+
+
+
+
+        @***************************************************Data Length**************************************************@
+        <script>
+            $("input").on("keyup", function () {
+                var maxLength = $(this).attr("maxlength");
+                if (maxLength == $(this).val().length) {
+                    alert("Characters length exceeds the Limit, please input less than " + maxLength + " characters");
+                }
+            })
+
+            $("textarea").on("keyup", function () {
+                var maxLength = $(this).attr("maxlength");
+                if (maxLength == $(this).val().length) {
+                    alert("Characters length exceeds the Limit, please input less than " + maxLength + " characters");
+                }
+            })
+        </script>
+
+        @***************************************************Print Data**************************************************@
+        <!--<script>
+        var Area = new function () {
+            this.Print = function () {
+                var dtDesign = document.getElementById('dtDesign');
+                //var Design = dtDesign.length - 1;
+
+                var style = "<style>";
+                style = style + "table {width: 100%;font: 17px Calibri;}";
+                style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+                style = style + "padding: 2px 3px;text-align: center;}";
+                style = style + "</style>";
+
+                var win = window.open('', '', 'height=700,width=700');
+                win.document.write(style);
+                win.document.write(dtDesign.outerHTML);
+                win.document.close();
+                win.print();
+            }
+        }
+    </script>-->
+        @***************************************************Print Data**************************************************@
+        <script type="text/javascript">
+            function PrintDiv() {
+                var divContents = document.getElementById("divcontent").innerHTML;
+                var printWindow = window.open('', '', 'height=200,width=400');
+                printWindow.document.write('<html><head><title>Print DIV Content</title>');
+                printWindow.document.write('</head><body >');
+                printWindow.document.write(divContents);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            }
+        </script>

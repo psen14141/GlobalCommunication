@@ -1,0 +1,149 @@
+﻿@model IEnumerable<GloableCommunication.Areas.Documents.Models.ViewModels.DocumentViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+    $(document).ready(function () {
+        $('#dtDesign').DataTable();
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+<h5>Document</h5>
+
+<p>
+    <a href="#" class="btn btn-primary" onclick="showAddOrEditUi(0)">Create New</a>
+</p>
+<table id="dtDesign" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.DocumentId)*@#
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.DocumentTypeId)*@Document Name
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.DocumentName)*@ Document Type
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.DocumentDescription)
+                </th>*@
+            @*<th>
+                    @Html.DisplayNameFor(model => model.DocumentFilePath)
+                </th>*@
+            @*<th>
+                    @Html.DisplayNameFor(model => model.DocumentIsDelete)
+                </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentTypeName)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.DocumentDescription)
+                    </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.DocumentFilePath)
+                    </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.DocumentIsDelete)
+                    </td>*@
+                <td>
+                    <a href="#" class="btn btn-primary" onclick="showAddOrEditUi(@item.DocumentId)">Edit</a>
+                    <a class="btn btn-danger" onclick="DeleteConfirmation('/Documents/Document/Delete/?Id=@item.DocumentId',null,null,true, 'Do you want to delete?','Permanently erase this data')">Delete</a>
+                    <a href="/Documents/Document/DownloadFile/?id=@item.DocumentId" class="btn btn-success">Download</a>
+                    @*<input type="submit" id="getFilePath" value="Download" class="btn btn-default" /> *@
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@*Add or Edit model*@
+
+<div id="AddOrEditDocument" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Document Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="formArea">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="uploadingZipFile()" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*uploadingZipFile()*@
+<script>
+    function showAddOrEditUi(id) {
+        $('#AddOrEditDocument').modal(); //open the model
+        $("#formArea").html(""); // Clear existing are
+
+        $.ajax({
+            method: "GET",
+            url: "/Documents/Document/AddorEditView?Flag=0&Id=" + id,
+        })
+            .done(function (msg) {
+                $("#formArea").html(msg);
+
+            });
+    }
+
+
+
+    function SaveData() {
+        let postData = new FormData();
+        postData.append('DocumentId', $("#DocumentId").val());
+        postData.append('DocumentTypeId', $("#DocumentCategoryId").val());
+        postData.append('DocumentName', $("#DocumentName").val());
+        postData.append('DocumentDescription', $("#DocumentDescription").val());
+        postData.append('DocumentIsDelete', $("#DocumentIsDelete").val());
+        postData.append('DocumentFilePath', $("#UploadedFile").val());
+
+        var files = $("#UploadedFile").get(0).files;
+        if (files.length > 0) {
+            postData.append("UploadedDoc", files[0]);
+        }
+
+        $.ajax({
+            method: "POST",
+            enctype: 'multipart/form-data',
+            url: "/Documents/Document/SaveData/",
+            data: postData,
+            contentType: false,
+            processData: false,
+        })
+            .done(function (msg) {
+                $('#AddOrEditDocument').modal('hide')
+                alert("Data has saved");
+                location.reload();
+            });
+    }
+
+</script>
+

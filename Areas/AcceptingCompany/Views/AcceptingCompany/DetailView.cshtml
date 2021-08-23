@@ -1,0 +1,571 @@
+﻿@model GloableCommunication.Areas.AcceptingCompany.Model.ViewModel.AcceptingCompanyViewModel
+
+@{
+    ViewData["Title"] = "DetailView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+        height: auto;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    label {
+        color: #1b1c20 !important;
+        font-size: 14px !important;
+    }
+    button {
+        color: #1b1c20 !important;
+        font-size: 14px !important;
+    }
+
+    input {
+        color: #1b1c20 !important;
+        font-size: 14px !important;
+    }
+</style>
+
+<div>
+    <button class="w3-button w3-green" onclick="goBack()"><i class="fa fa-arrow-left"></i></button>
+    <button class="w3-button w3-blue"><i class="fa fa-print"></i></button>
+</div>
+
+<div class="form-group">
+    <div class="row">
+        <a asp-action="Create" style="font-size:14px; padding-left:10px">戻 る</a>
+        @*<a asp-action="Create" style="font-size:14px; padding-left:10px">編 集</a>*@
+        <a asp-action="Create" style="font-size:14px; padding-left:10px">印 刷</a>
+        <div class="col-md-2 align-self-center" style="padding-left:630px;"><label asp-for="AcceptingCompanyCode" class="col-md-12 text-right"> 更新日:</label></div>
+        <div class="col-md-4 align-self-center" style="padding-left:50px;">
+            <input type="text" name="UpdateDate" value="@Model.AcceptingCompany.UpdateDate" id="UpdateDate" class="form-control" style="border: none; width:100px;" />
+        </div>
+    </div>
+</div>
+
+
+<div class="w3-container w3-margin-top">
+    <h5 style="text-align:center"><b><u>受 入 企 業 参 照</u></b></h5>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @*<form asp-action="Add" action="/AcceptingCompany/AcceptingCompany/Save">*@
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <input type="hidden" name="AcceptingCompanyId" id="AcceptingCompanyId" value="@Model.AcceptingCompany.AcceptingCompanyId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-2 align-self-center" style="padding-left:15px;"><label asp-for="AcceptingCompanyCode" class="col-md-2 text-right">受入企業CD</label></div>
+                <div class="col-md-4 align-self-center" style="padding-left:5px;">
+                    <input name="AcceptingCompanyCode" id="AcceptingCompanyCode" class="form-control" style="border: none; background-color:none;" value="@Model.AcceptingCompany.AcceptingCompanyCode" disabled/>
+                    @*<span name="AcceptingCompanyCode" id="AcceptingCompanyCode" class="form-control" style="border: none; background-color:none;">
+                        @Model.AcceptingCompany.AcceptingCompanyCode
+                    </span>*@
+                    <span asp-validation-for="AcceptingCompanyCode" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" style="padding-top:1px;">
+            <div class="row">
+                <div class="col-md-2 align-self-center" style="padding-left:15px;"><label asp-for="AcceptiingCompanyName" class="col-md-4 text-right">受入企業名</label></div>
+                <div class="col-md-4 align-self-center" style="padding-left:5px;">
+                    <input name="AcceptiingCompanyName" id="AcceptiingCompanyName" style="border:none;" class="form-control" disabled value="@Model.AcceptingCompany.AcceptiingCompanyName"/>
+                    @*<span name="AcceptiingCompanyName" id="AcceptiingCompanyName" style="border:none;" class="form-control">
+                        @Model.AcceptingCompany.AcceptiingCompanyName
+                    </span>*@
+                    <span asp-validation-for="AcceptiingCompanyName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="column" style="padding-left:5px; padding-right:3px;">
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-4 align-self-center" style="padding-left:10px;"><label asp-for="HiraganaName" class="col-md-6 text-right">読み（かな)</label></div>
+                    <div class="col-md-8 align-self-center" style="padding-left:0px;">
+                        <input name="HiraganaName" id="HiraganaName" style="border: none; background-color:none;" class="form-control" disabled value="@Model.AcceptingCompany.HiraganaName"/>
+                        @*<span name="HiraganaName" id="HiraganaName" style="border: none; background-color:none;" class="form-control">
+                            @Model.AcceptingCompany.HiraganaName
+                        </span>*@
+                        <span asp-validation-for="HiraganaName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-4 align-self-center" style="padding-left:10px;"><label asp-for="EnglishName" class="col-md-4 text-right">英語表記</label></div>
+                    <div class="col-md-8 align-self-center" style="padding-left:0px">
+                        <input name="EnglishName" id="EnglishName" style="border: none;" class="form-control" disabled value="@Model.AcceptingCompany.EnglishName"/>
+                        @*<span name="EnglishName" id="EnglishName" style="border: none;" class="form-control">
+                            @Model.AcceptingCompany.EnglishName
+                        </span>*@
+                        <span asp-validation-for="EnglishName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-3 align-self-center" style="padding-left:10px;"><label asp-for="AreaId" class="col-md-6 text-right">地域区分</label></div>
+                    <div class="col-md-8 align-self-center" style="padding-left:45px">
+                        <input asp-for="AreaId" class="form-control" style="border: none; width:335px;" disabled value=" @foreach (var row in Model.accepArea)
+                            {
+
+                                @row.AreaName
+
+                            }"/>
+                        @*<span asp-for="AreaId" class="form-control" style="border: none; width:335px;">
+                           
+                        </span>*@
+                        <span asp-validation-for="AreaId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-3 align-self-center" style="padding-left:10px;"><label asp-for="Zip" class="col-md-6 text-right">所在地</label></div>
+                    <div class="col-md-2 align-self-center" style="padding-left:40px"><span style="color:red;" asp-for="Zip" class="col-md-4 text-right">〒</span></div>
+                    <div class="col-md-7 align-self-center">
+                        <input name="Zip" id="Zip" style="border: none;" class="form-control" disabled value="@Model.AcceptingCompany.Zip"/>
+                        @*<span name="Zip" id="Zip" style="border: none;" class="form-control">
+                            @Model.AcceptingCompany.Zip
+                        </span>*@
+                        <span asp-validation-for="Zip" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-4 align-self-center" style="padding-left:10px;"></div>
+                    <div class="col-md-8 align-self-center" style="padding-left:0px;">
+                        <input name="Address1" id="Address1" style="border: none;" class="form-control" disabled value="@Model.AcceptingCompany.Address1"/>
+                        @*<span name="Address1" id="Address1" style="border: none;" class="form-control">
+                            @Model.AcceptingCompany.Address1
+                        </span>*@
+                        <span asp-validation-for="Address1" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-4 align-self-center" style="padding-left:10px;"></div>
+                    <div class="col-md-8 align-self-center" style="padding-left:0px;">
+                        <input name="Address2" id="Address2" style="border: none;" class="form-control" disabled value="@Model.AcceptingCompany.Address2" />
+                        @*<span name="Address2" id="Address2" style="border: none;" class="form-control">
+                            @Model.AcceptingCompany.Address2
+                        </span>*@
+                        <span asp-validation-for="Address2" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-3 align-self-center" style="padding-left:10px;"><label asp-for="TelephoneNo" class="col-md-4 text-right">連絡先</label></div>
+                    <div class="col-md-1 align-self-center" style="padding-left:30px"><label asp-for="TelephoneNo" class="col-md-1 text-right">TEL</label></div>
+                    <div class="col-md-2 align-self-center" style="padding-left:40px">
+                        <input name="TelephoneNo" id="TelephoneNo" style="border: none; width:120px;" class="form-control" disabled value="@Model.AcceptingCompany.TelephoneNo"/>
+                        @*<span name="TelephoneNo" id="TelephoneNo" style="border: none; width:120px;" class="form-control">
+                            @Model.AcceptingCompany.TelephoneNo
+                        </span>*@
+                        <span asp-validation-for="TelephoneNo" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-1 align-self-center" style="padding-left:30px; padding-left:72px;"><label asp-for="Fax" class="col-md-1 text-right">FAX</label></div>
+                    <div class="col-md-2 align-self-center" style="padding-left:40px">
+                        <input name="Fax" id="Fax" style="border: none; width:120px;" class="form-control" disabled value="@Model.AcceptingCompany.Fax"/>
+                        @*<span name="Fax" id="Fax" style="border: none; width:120px;" class="form-control">
+                            @Model.AcceptingCompany.Fax
+                        </span>*@
+                        <span asp-validation-for="Fax" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-4 align-self-center" style="padding-left:10px;"><label asp-for="TrainingPrefectureCd" class="col-md-6 text-right">実習実施県区分</label></div>
+                    <div class="col-md-8 align-self-center" style="padding-left:0px">
+                        <input id="TrainingPrefectureCd" name="TrainingPrefectureCd" class="form-control" style="border: none;" disabled value="@Model.AcceptingCompany.TrainingPrefectureCd"/>
+                        @*<span id="TrainingPrefectureCd" name="TrainingPrefectureCd" class="form-control" style="border: none;">
+                            @Model.AcceptingCompany.TrainingPrefectureCd
+                        </span>*@
+                        <span asp-validation-for="TrainingPrefectureCd" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-3 align-self-center" style="padding-left:10px;"><label asp-for="PerfectureId" class="col-md-6 text-right">県区分</label></div>
+                    <div class="col-md-8 align-self-center" style="padding-left:45px">
+                        <input name="PerfectureId" id="PerfectureId" class="form-control" style="border: none;  width:335px;" disabled value=" @foreach (var row in Model.accepPerfectures)
+                            {
+
+                                @row.PerfectureName
+
+                            }"/>
+                        @*<span name="PerfectureId" id="PerfectureId" class="form-control" style="border: none;  width:335px;">
+                           
+                        </span>*@
+                        <span asp-validation-for="PerfectureId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-3 align-self-center" style="padding-left:10px;"><label asp-for="TrainingZip" class="col-md-6 text-right">実習実施住所</label></div>
+                    <div class="col-md-2 align-self-center" style="padding-left:40px"><span style="color:red;" asp-for="Zip" class="col-md-4 text-right">〒</span></div>
+                    <div class="col-md-7 align-self-center">
+                        <input name="TrainingZip" id="TrainingZip" style="border: none;" class="form-control" disabled value=" @Model.AcceptingCompany.TrainingZip" />
+                        @*<span name="TrainingZip" id="TrainingZip" style="border: none;" class="form-control">
+                            @Model.AcceptingCompany.TrainingZip
+                        </span>*@
+                        <span asp-validation-for="TrainingZip" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-4 align-self-center" style="padding-left:10px;"></div>
+                    <div class="col-md-8 align-self-center" style="padding-left:0px;">
+                        <input name="TrainingAdress1" id="TrainingAdress1" style="border: none;" class="form-control" disabled value="@Model.AcceptingCompany.TrainingAdress1" />
+                        @*<span name="TrainingAdress1" id="TrainingAdress1" style="border: none;" class="form-control">
+                            @Model.AcceptingCompany.TrainingAdress1
+                        </span>*@
+                        <span asp-validation-for="TrainingAdress1" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-4 align-self-center" style="padding-left:10px;"></div>
+                    <div class="col-md-8 align-self-center" style="padding-left:0px;">
+                        <input name="TrainingAdress2" id="TrainingAdress2" style="border: none;" class="form-control" disabled value="@Model.AcceptingCompany.TrainingAdress2" />
+                        @*<span name="TrainingAdress2" id="TrainingAdress2" style="border: none;" class="form-control">
+                            @Model.AcceptingCompany.TrainingAdress2
+                        </span>*@
+                        <span asp-validation-for="TrainingAdress2" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-3 align-self-center" style="padding-left:10px;"><label asp-for="TrainingTel" class="col-md-4 text-right">実習実施連絡先</label></div>
+                    <div class="col-md-1 align-self-center" style="padding-left:30px;"><label asp-for="TrainingTel" class="col-md-1 text-right">TEL</label></div>
+                    <div class="col-md-2 align-self-center" style="padding-left:40px;">
+                        <input name="TrainingTel" id="TrainingTel" style="border: none; width:120px;" class="form-control" disabled value=" @Model.AcceptingCompany.TrainingTel"/>
+                        @*<span name="TrainingTel" id="TrainingTel" style="border: none; width:120px;" class="form-control">
+                            @Model.AcceptingCompany.TrainingTel
+                        </span>*@
+                        <span asp-validation-for="TrainingTel" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-1 align-self-center" style="padding-left:30px; padding-left:72px;"><label asp-for="TrainingFax" class="col-md-1 text-right">FAX</label></div>
+                    <div class="col-md-2 align-self-center" style="padding-left:40px">
+                        <input name="TrainingFax" id="TrainingFax" style="border: none; width:120px;" class="form-control" disabled value=" @Model.AcceptingCompany.TrainingFax" />
+                        @*<span name="TrainingFax" id="TrainingFax" style="border: none; width:120px;" class="form-control">
+                            @Model.AcceptingCompany.TrainingFax
+                        </span>*@
+                        <span asp-validation-for="TrainingFax" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-3 align-self-center" style="padding-left: 10px;"><label asp-for="CheifExecutiveOfficer" class="col-md-6 text-right">代表者</label></div>
+                    <div class="col-md-9 align-self-center" style="padding-left: 45px;">
+                        <input name="CheifExecutiveOfficer" style="border: none; width:335px;" id="CheifExecutiveOfficer" class="form-control" disabled value=" @Model.AcceptingCompany.CheifExecutiveOfficer" />
+                        @*<span name="CheifExecutiveOfficer" style="border: none; width:335px;" id="CheifExecutiveOfficer" class="form-control">
+                            @Model.AcceptingCompany.CheifExecutiveOfficer
+                        </span>*@
+                        <span asp-validation-for="CheifExecutiveOfficer" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-3 align-self-center" style="padding-left: 10px;"><label asp-for="Member" class="col-md-3 text-right">従業員数</label></div>
+                    <div class="col-md-1 align-self-center" style="padding-left: 45px;">
+                        <input name="Member" id="Member" style="border: none; width:100px;" class="form-control" disabled value=" @Model.AcceptingCompany.Member" />
+                        @*<span name="Member" id="Member" style="border: none; width:100px;" class="form-control">
+                            @Model.AcceptingCompany.Member
+                        </span>*@
+                        <span asp-validation-for="Member" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-1 align-self-center" style="padding-left: 75px;"><label asp-for="member" class="col-md-1 text-right">名</label></div>
+                    <div class="col-md-2 align-self-center" style="padding-left: 30px;"><label asp-for="Member" class="col-md-1 text-right">資本金</label></div>
+                    <div class="col-md-1 align-self-center" style="padding-left: 10px;">
+                        <input name="CapitalStock" id="CapitalStock" style="border: none; width:100px;" class="form-control" disabled value="@Model.AcceptingCompany.CapitalStock"/>
+                        @*<span name="CapitalStock" id="CapitalStock" style="border: none; width:100px;" class="form-control">
+                            @Model.AcceptingCompany.CapitalStock
+                        </span>*@
+                        <span asp-validation-for="CapitalStock" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-1 align-self-center" style="padding-left: 55px;"><label asp-for="CapitalStock" class="col-md-1 text-right">万円</label></div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-3 align-self-center" style="padding-left: 10px;"><label asp-for="Business" class="col-md-3 text-right">業種</label></div>
+                    <div class="col-md-9 align-self-center" style="padding-left: 45px;">
+                        <input name="Business" id="Business" style="border: none; width:335px;" class="form-control" disabled value="@Model.AcceptingCompany.Business" />
+                        @*<span name="Business" id="Business" style="border: none; width:335px;" class="form-control">
+                            @Model.AcceptingCompany.Business
+                        </span>*@
+                        <span asp-validation-for="Business" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-4 align-self-center" style="padding-left: 10px;"><label asp-for="IpNotificationNo" class="col-md-6 text-right">実習実施者届出受理番号</label></div>
+                    <div class="col-md-8 align-self-center" style="padding-left: 0px;">
+                        <input name="IpNotificationNo" id="IpNotificationNo" style="border: none; width:325px;" class="form-control" disabled value="@Model.AcceptingCompany.IpNotificationNo" />
+                        @*<span name="IpNotificationNo" id="IpNotificationNo" style="border: none; width:325px;" class="form-control">
+                            @Model.AcceptingCompany.IpNotificationNo
+                        </span>*@
+                        <span asp-validation-for="IpNotificationNo" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-4 align-self-center" style="padding-left:10px;"><label asp-for="IpNotificationDate" class="col-md-6 text-right">実習実施者届出受理日</label></div>
+                    <div class="col-md-6 align-self-center" style="padding-left:0px">
+                        <input name="IpNotificationDate" id="IpNotificationDate" style="border: none; width:325px;" class="form-control" disabled value="@Model.AcceptingCompany.IpNotificationDate"/>
+                        @*<span name="IpNotificationDate" id="IpNotificationDate" style="border: none; width:325px;" class="form-control">
+                            @Model.AcceptingCompany.IpNotificationDate
+                        </span>*@
+                        <span asp-validation-for="IpNotificationDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="form-group" style="padding-top:1px;">
+            <div class="row">
+                <div class="col-md-3 align-self-center" style="padding-left: 10px;"><label asp-for="IpNotificationDate" class="col-md-6 text-right">実習実施者届出受理日</label></div>
+                <div class="col-md-2 align-self-center" style="padding-left: 45px;">
+                    <span name="IpNotificationDate" id="IpNotificationDate" style="border: none; width:70px;" class="form-control">2012-->
+            @*@Model.AcceptingCompany.IpNotificationDate*@
+            <!--</span>
+                <span asp-validation-for="IpNotificationDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-1 align-self-center" style="padding-left:28.5px;"><span asp-validation-for="IpNotificationDate">年</span></div>
+
+            <div class="col-md-2 align-self-center">
+                <span name="IpNotificationDate" id="IpNotificationDate" style="border: none; width:70px;" class="form-control">05-->
+            @*  @Model.AcceptingCompany.IpNotificationDate*@
+            <!--</span>
+                <span asp-validation-for="IpNotificationDate" class="text-danger"></span>
+            </div>
+            <div class="col-md-1 align-self-center" style="padding-left: 2px;"><span asp-validation-for="IpNotificationDate">月</span></div>
+
+            <div class="col-md-2 align-self-center" style="padding-left: 2px;">
+                <span name="IpNotificationDate" id="IpNotificationDate" style="border: none; width:70px;" class="form-control">10-->
+            @* @Model.AcceptingCompany.IpNotificationDate*@
+            <!--</span>
+                        <span asp-validation-for="IpNotificationDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-1 align-self-center" style="padding-left: 2px;"><span asp-validation-for="IpNotificationDate">日</span></div>
+                </div>
+            </div>-->
+        </div>
+
+
+
+        <div class="column" style="padding-left:30px;">
+            <div class="w3-panel w3-card" style="width:485px; height:900px;">
+                <p>指導員情報</p>
+                <input name="Charge" id="Charge" value="@Model.AcceptingCompany.Charge" class="form-control" style="border: 2px solid #ccc;  width:450px; height:850px;" />
+                @*<textarea style="width:450px; height:850px;"></textarea>*@
+            </div>
+        </div>
+
+        @*<div class="form-group" style="padding-top:1px;">
+                <div class="row">
+                    <div class="col-md-4 align-self-center"><label asp-for="Limit" class="col-md-6 text-right">技能実習貢任者</label></div>
+                    <div class="col-md-3 align-self-center">
+                        <input name="Limit" id="Limit" value="貢任者 A" style="border: none;" class="form-control" />
+                        <span asp-validation-for="Limit" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2 align-self-center"><label asp-for="Limit" class="col-md-4 text-right">役職</label></div>
+                    <div class="col-md-3 align-self-center">
+                        <input name="Limit" id="Limit" value="貢任者" style="border: none;" class="form-control" />
+                        <span asp-validation-for="Limit" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>*@
+        @*</form>*@
+    </div>
+</div>
+
+<div class="w3-container w3-margin-top w3-gray">
+    <div class="form-group" style="padding-top:1px;">
+        <div class="row">
+            <div class="col-md-6 align-self-center">
+                <h5 style=" text-align:center; padding-left:100px;">
+                    <b>受入実習生一覧</b>
+                    <span style="padding-left:200px;">総人数</span>
+                </h5>
+            </div>
+            <div class="col-md-1 align-self-center">
+                <input name="RowCount" id="RowCount" value="" style="border: 2px solid #ccc; color:black;" class="form-control" disabled />
+            </div>
+            <div class="col-md-1 align-self-center">人</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#dtDesign').DataTable({
+            "lengthMenu": [10, 20, 30, 40, 50],
+            "language": {
+                "search": "検索:",
+                "paginate": {
+                    "first": "一ページ目",
+                    "last": "最後のページ",
+                    "next": "次へ",
+                    "previous": "前へ"
+                },
+                "lengthMenu": " _MENU_ 件表示",
+                "info": "検索結果 _TOTAL_ 以上 のうち _START_ ~ _END_件",
+                "infoEmpty": "検索結果 0 以上 のうち 0 ~ 0件",
+                "emptyTable": "条件に一致する結果は見つかりませんでした",
+                "zeroRecords": "条件に一致する結果は見つかりませんでした",
+            },
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+
+<div style="overflow:auto">
+    <table id="dtDesign" style="text-align:center" class="table table-bordered table-striped table-sm" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>
+                    実習生No
+                </th>
+                <th>
+                    氏名(英)
+                </th>
+                <th>
+                    氏名(日)
+                </th>
+                <th>
+                    フリガナ
+                </th>
+                <th>
+                    入国状況
+                </th>
+                <th>
+                    在留資格
+                </th>
+                <th>
+                    実習職種
+                </th>
+                <th>
+                    送出機関
+                </th>
+                <th>
+                    入国日
+                </th>
+                <th>
+                    生年月日
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.accepTrainee)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TraineeNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TraineeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.KanjiName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.KatakanaName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EntranceStatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CountryId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OccupationId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SendingCompanyId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EntranceDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BirthDate)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@*************************************************Row Count****************************************************@
+
+<script language="JavaScript">
+    var Rows = document.getElementById('table').getElementsByTagName('tr');
+    var RowCount = Rows.length - 1;
+    document.getElementById("RowCount").value = RowCount;
+</script>
+
+@***************************************************Back Button**************************************************@
+<script>
+    function goBack() {
+        window.location.href = "/AcceptingCompany/AcceptingCompany/Index";
+    }
+</script>
+

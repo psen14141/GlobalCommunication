@@ -1,0 +1,188 @@
+﻿@model GloableCommunication.Areas.Occupations.Model.ViewModels.OccupationViewModel
+
+@{
+    ViewData["Title"] = "AddorEditView";
+    Layout = null;
+}
+
+
+<style>
+    .modal-nw {
+        max-width: 40% !important;
+        align-self: center !important;
+    }
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<div class="@*w3-padding*@ w3-white">
+    <div class="col-md-12 form-group">
+        <div class="row">
+            <div class="col-md-6">
+                <button class="w3-button w3-green" data-dismiss="modal"><i class="fa fa-arrow-left"></i></button>
+                <button class="w3-button w3-blue" onclick="SaveData()"><i class="fa fa-check-circle"></i></button>
+                <button class="w3-button w3-light-green" onclick="ClearData()"><i class="fa fa-undo"></i></button>
+            </div>
+            <div class="col-md-6">
+                @if (Model.OccupationId == 0)
+                {
+                    <p style="text-align:right">作成日: @Model.NowDate</p>
+                }
+                else
+                {
+                    <p style="text-align:right">更新日: @Model.NowDate</p>
+                }
+            </div>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Create" style="font-size:15px; padding-left:15px">戻る</a>
+        <a asp-action="Create" style="font-size:15px; padding-left:15px">登録</a>
+        <a asp-action="Create" style="font-size:15px; padding-left:15px">クリア</a>
+    </div>
+</div>
+
+<div class="w3-container w3-margin-top w3-gray">
+    <h5 style="text-align:center">実習職種マスタ登録</h5>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" action="/Occupations/Occupation/SaveData" id="EditForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input id="UpdateDateTime" name="UpdateDateTime" type="hidden" />
+            <input id="OccupationId" name="OccupationId" type="hidden" value="@Model.OccupationId"/>
+            <input id="IsDeleteOccupation" name="IsDeleteOccupation" type="hidden"/>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center">
+                        <label asp-for="OccupationCode" class="control-label">実習職種CD</label>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-4 align-self-center">
+                        @if (Model.OccupationId == 0)
+                        {
+                            <input name="OccupationCode" id="OccupationCode" class="form-control" style="border: 2px solid #ccc;" value="@Model.OccupationCode" readonly/>
+                        }
+                        else
+                        {
+                            <input name="OccupationCode" id="OccupationCode" class="form-control" style="border: 2px solid #ccc;" value="@Model.OccupationCode" readonly/>
+                        }
+                        <span asp-validation-for="OccupationCode" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-5 align-self-center">
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center">
+                        <label asp-for="OccupationName" class="control-label">実習職種名</label>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-9 align-self-center">
+                        <input name="OccupationName" id="OccupationName" class="form-control" style="border: 2px solid #ccc;" value="@Model.OccupationName" 
+                               autocomplete="off" maxlength="50"/>
+                        <span asp-validation-for="OccupationName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-4 border">
+                        <div class="row ">
+                            <div class="col-md-0.5"></div>
+                            <div class="col-md-10">
+                                <label> 職種年数</label>
+                            </div>
+                            <div class="col-md-1"></div>
+                            <div class="col-md-0.5"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="radio-inline ">
+                                    <input type="radio" name="YearFlag" id="ThreeYearFlag" value="3" checked>  3年
+                                </label>
+                            </div>
+                            <div class="col-md-1"></div>
+                            <div class="col-md-3">
+                                <label class="radio-inline">
+                                    <input type="radio" name="YearFlag" value="1" id="OneYearFlag">  1年
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>        
+        </form>
+    </div>
+</div>
+
+<script>
+
+
+    function ClearData() {
+        $("input[name='OccupationName']").val('');
+    }
+
+    function SaveData() {
+        let postData = new FormData();
+
+        postData.append('OccupationId', $("#OccupationId").val());
+        postData.append('OccupationCode', $("#OccupationCode").val());
+        if (!IsFilled("OccupationCode", "実習職種CD", "実習職種CDを入力してください！")) {
+            return;
+        }
+        postData.append('OccupationName', $("#OccupationName").val());
+        if (!IsFilled("OccupationName", "実習職種名", "実習職種名を入力してください！")) {
+            return;
+        }
+        var checkThree = document.getElementById('ThreeYearFlag');
+        var checkOne = document.getElementById('OneYearFlag');
+
+        if (checkThree.checked) {
+            postData.append('TraineeYearFlag', $("#ThreeYearFlag").val());
+        }
+        if (checkOne.checked) {
+            postData.append('TraineeYearFlag', $("#OneYearFlag").val());
+        }
+
+        $.ajax({
+            method: "POST",
+            url: "/Occupations/Occupation/SaveData/",
+            data: postData,
+            contentType: false,
+            processData: false,
+
+        })
+            .done(function (msg) {
+                alert("データが保存されました");
+                location.reload();
+            });
+    }
+
+    $("input").on("keyup", function () {
+        var maxLength = $(this).attr("maxlength");
+        if (maxLength == $(this).val().length) {
+            alert("文字数が制限を超えています." + maxLength + "文字未満で入力してください");
+        }
+    })
+</script>
+
+

@@ -1,0 +1,286 @@
+﻿@*@model GloableCommunication.DbModels.Perfecture*@
+@model GloableCommunication.Areas.MasterMaintainance.Models.ViewModels.PrefectureViewModel;
+
+@{
+    ViewData["Title"] = "AddorEdit";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+
+<div class="@*w3-padding*@ w3-white">
+    <div class="col-md-12 form-group">
+        <div class="row">
+            <div class="col-md-6">
+                <button class="w3-button w3-green" data-dismiss="modal"><i class="fa fa-arrow-left"></i></button>
+                <button class="w3-button w3-blue" onclick=" SaveData()"><i class="fa fa-check-circle"></i></button>
+                <button class="w3-button w3-light-green" onclick="ClearData()"><i class="fa fa-undo"></i></button>
+            </div>
+            <div class="col-md-6">
+                @if (Model.PerfectureId == 0)
+                {
+                    <p style="text-align:right">入力日:@Model.Currentdate </p>
+                }
+                else
+                {
+                    <p style="text-align:right">更新日:@Model.Currentdate </p>
+                }
+            </div>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Create" style="font-size:15px; padding-left:15px">戻る</a>
+        <a asp-action="Create" style="font-size:15px; padding-left:15px">登録</a>
+        <a asp-action="Create" style="font-size:15px; padding-left:15px">クリア</a>
+    </div>
+</div>
+
+
+
+
+
+<div class="w3-container w3-margin-top w3-gray">
+    <h5 style="text-align:center">県マスタ登録</h5>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="AddorEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input name="PerfectureId" type="hidden" id="PerfectureId" value="@Model.PerfectureId" class="form-control" />
+                <span asp-validation-for="PerfectureId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3 align-self-center"><label asp-for="PerfectureCode" class="control-label"></label>県コード</div>
+                    <div class="col-md-9 align-self-center">
+                        <input readonly  type="number" min="1"  onKeyPress="if(this.value.length==10) return false;"    name="PerfectureCode"  id="PerfectureCode"   value="@Model.PerfectureCode"   style="border: 2px solid #ccc;" class="form-control" />
+                        <span asp-validation-for="PerfectureCode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3 align-self-center"><label asp-for="PerfectureName" class="control-label">県名</label></div>
+                    <div class="col-md-9 align-self-center">
+                        <input  onKeyPress="if(this.value.length==50) return false;"   name="PerfectureName" id="PerfectureName" value="@Model.PerfectureName" style="border: 2px solid #ccc;" class="form-control" />
+                        <span asp-validation-for="PerfectureName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-3 align-self-center"><label asp-for="AreaId" class="control-label">地域名</label></div>
+                    <div class="col-md-9 align-self-center">
+                        @*<input name="AreaId" id="AreaId" value="@Model.AreaId" style="border: 2px solid #ccc;" class="form-control" />*@
+                        <select class="form-control" name="AreaId" id="AreaId">
+
+
+                            @foreach (var area in Model.areas)
+                            {
+                                if (area.AreaId == Model.AreaId)
+                                {
+                                    <option selected value="@area.AreaId">@area.AreaName</option>
+                                }
+                                else
+                                {
+                                    <option value="@area.AreaId">@area.AreaName</option>
+                                }
+
+
+                            }
+                        </select>
+                        <span asp-validation-for="AreaId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    @*<div class="col-md-2 align-self-center"><label asp-for="InsertDatetTime" class="control-label">登録日時</label></div>*@
+                    @*<div class="col-md-4 align-self-cente input-group-append">*@
+                    <input name="InsertDatetTime" type="hidden" id="InsertDatetTime" value="@Model.InsertDatetTime" style="border: 2px solid #ccc;"  class="form-control" />
+                    @*<span class="input-group-text">
+                    <i class="la la-calendar-o"></i>
+                </span>*@
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    @*<div class="col-md-2 align-self-center"><label asp-for="UpdateDateTime" class="control-label">更新日時</label></div>*@
+                    @*<div class="col-md-4 align-self-cente input-group-append">*@
+                        <input name="UpdateDateTime"  type="hidden"  id="UpdateDateTime" value="@Model.UpdateDateTime" style="border: 2px solid #ccc;" class="form-control" />
+                        @*<span class="input-group-text">
+                            <i class="la la-calendar-o"></i>
+                        </span>*@
+                    
+                </div>
+            </div>
+
+           
+
+         </form>
+    </div>
+</div>
+
+
+
+<script src="/assets/js/plugin/datepicker/bootstrap-datetimepicker.min.js"></script>
+<script>
+    $('#InsertDatetTime').datetimepicker({
+        format: 'YYYY/MM/DD HH:mm',
+
+    });
+    $('#UpdateDateTime').datetimepicker({
+        format: 'YYYY/MM/DD HH:mm',
+    });
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@*<div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>*@
+
+
+@*<div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+@*Back Button*@
+<script>
+    function goBack() {
+        window.history.back();
+    }
+
+
+    function ClearData() {
+        
+        $("input[name='PerfectureName']").val('');
+    }
+</script>
+
+
+<script>
+
+    function SaveData() {
+
+        let postData = new FormData();
+        postData.append('PerfectureId', $("#PerfectureId").val());
+
+
+        
+        
+        if (!IsFilled("PerfectureCode", "県コード", "県コードを記入してください"))
+        {
+        return;
+
+        }
+
+        var val = ($("#PerfectureCode").val());
+        if (val < 1) {
+            alert("県コードは正の整数である必要があります");
+            return;
+        }
+
+
+        if (val % 1 !==0) {
+            alert("県コードは正の整数である必要があります");
+            return;
+        }
+
+        //if (int(val) !== val) {
+        //    alert("県コードは正の整数である必要があります");
+        //    return;
+        //}
+
+        
+
+
+        var ncount = ($("#PerfectureCode").val()).length;
+        if (ncount > 10) {
+            alert("県コード長さが長すぎます");
+            return;
+        }
+
+
+
+
+
+        else { postData.append('PerfectureCode', $("#PerfectureCode").val());}
+
+
+
+
+
+
+        if (!IsFilled("PerfectureName", "県名", "県名をご記入ください")) {
+            return;
+        }
+
+
+       
+        var ncount = ($("#PerfectureName").val()).length;
+        if (ncount > 50) {
+            alert("県名長さが長すぎます");
+            return;
+        }
+        else { postData.append('PerfectureName', $("#PerfectureName").val()); }
+
+
+
+
+
+
+
+
+
+       
+            //postData.append('PerfectureCode', $("#PerfectureCode").val());
+           //postData.append('PerfectureName', $("#PerfectureName").val());
+        //postData.append('InsertDatetTime', $("#InsertDatetTime").val());
+        //postData.append('UpdateDateTime', $("#UpdateDateTime").val());
+        postData.append('AreaId', $("#AreaId").val());
+       
+
+       
+
+
+        $.ajax({
+            method: "POST",
+            url: "/MasterMaintainance/Prefecture/SaveData",
+            data: postData,
+            contentType: false,
+            processData: false,
+        }).done(function (data) {
+            
+
+            location.reload();
+
+            window.location = '/MasterMaintainance/Prefecture/Index';
+
+        });
+
+
+
+
+
+    
+
+    }
+</script>

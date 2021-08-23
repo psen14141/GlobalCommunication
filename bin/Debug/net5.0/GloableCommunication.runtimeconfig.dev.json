@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\daiki\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\daiki\\.nuget\\packages"
+    ]
+  }
+}

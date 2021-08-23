@@ -1,0 +1,268 @@
+﻿@*@model GloableCommunication.DbModels.Perfecture*@
+@model GloableCommunication.Areas.MasterMaintainance.Models.ViewModels.PrefectureViewModel;
+@*@model GloableCommunication.Areas.MasterMaintainance.Models.ViewModels.PrefectureViewModel*@
+
+@*@model IEnumerable<GloableCommunication.Areas.MasterMaintainance.Models.ViewModels.PrefectureViewModel>*@
+
+@{
+    ViewData["Title"] = "AddorEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="w3-padding w3-white">
+    <div>
+        <button class="w3-button w3-green" onclick="goBack()"><i class="fa fa-arrow-left"></i></button>
+       
+        <button class="w3-button w3-light-blue" onclick="PrintDiv()"><i class="fa fa-print"></i></button>
+    </div>
+    <div>
+        <a asp-action="Create" style="font-size:15px; padding-left:10px">戻る</a>
+       
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">印刷</a>
+        @*<p style="text-align:right">更新日: 2018/08/10</p>*@
+    </div>
+</div>
+
+<div class="w3-container w3-margin-top w3-gray">
+    <h5 style="text-align:center">県マスタ詳細</h5>
+</div>
+
+<div  id="divcontent" class="row">
+    <div class="col-md-12">
+        <form  asp-action="AddorEdit"   >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input name="PerfectureId" type="hidden" id="PerfectureId" value="" class="form-control" />
+                <span asp-validation-for="PerfectureId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="PerfectureCode" class="control-label"></label>県コード</div>
+                    <div class="col-md-4 align-self-center">
+                        @*<input name="PerfectureCode" id="PerfectureCode" value="" style="border: 2px solid #ccc;" class="form-control" />*@
+                        <label for="PerfectureCode">@Model.PerfectureCode</label>
+                        <span asp-validation-for="PerfectureCode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="PerfectureName" class="control-label">県名</label></div>
+                    <div class="col-md-4 align-self-center">
+                        @*<input name="PerfectureName" id="PerfectureName" value="" style="border: 2px solid #ccc;" class="form-control" />*@
+                        <label for="PerfectureName">@Model.PerfectureName</label>
+                        <span asp-validation-for="PerfectureName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="InsertDatetTime" class="control-label">登録日時</label></div>
+                    <div class="col-md-4 align-self-cente input-group-append">
+                        @*<input name="InsertDatetTime" id="InsertDatetTime" value="" style="border: 2px solid #ccc;" class="form-control" />*@
+                        <label for="InsertDatetTime">@Model.InsertDatetTime</label>
+                        <span asp-validation-for="InsertDatetTime" class="text-danger"></span>
+                        @*<span class="input-group-text">
+                                <i class="la la-calendar-o"></i>
+                            </span>*@
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="UpdateDateTime" class="control-label">更新日時</label></div>
+                    <div class="col-md-4 align-self-cente input-group-append">
+                        @*<input name="UpdateDateTime" id="UpdateDateTime" value="" style="border: 2px solid #ccc;" class="form-control" />*@
+                        <label for="UpdateDateTime">@Model.UpdateDateTime</label>
+                        <span asp-validation-for="UpdateDateTime" class="text-danger"></span>
+                        @*<span class="input-group-text">
+                                <i class="la la-calendar-o"></i>
+                            </span>*@
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="AreaId" class="control-label">地域コード</label></div>
+                    <div class="col-md-4 align-self-center">
+                        @*<input name="AreaId" id="AreaId" value="" style="border: 2px solid #ccc;" class="form-control" />*@
+                        <label for="AreaId">@Model.AreaCode</label>
+                        <span asp-validation-for="AreaId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="AreaName" class="control-label">地域名</label></div>
+                    <div class="col-md-4 align-self-center">
+                        @*<input name="AreaName" id="AreaName" value="" style="border: 2px solid #ccc;" class="form-control" />*@
+                        <label for="AreaName">@Model.AreaName</label>
+                        <span asp-validation-for="AreaName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+
+<script src="/assets/js/plugin/datepicker/bootstrap-datetimepicker.min.js"></script>
+<script>
+    $('#InsertDatetTime').datetimepicker({
+        format: 'YYYY/MM/DD HH:mm',
+
+    });
+    $('#UpdateDateTime').datetimepicker({
+        format: 'YYYY/MM/DD HH:mm',
+    });
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@*<div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>*@
+
+
+@*<div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+
+
+@*Back Button*@
+
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+
+
+
+<div hidden id="dtDesign2">
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    
+                </th>
+                <th>
+                    
+                </th>
+               
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>
+                    県コード &emsp;
+                </td>
+                <td>
+                    @Model.PerfectureCode
+                </td>
+
+
+
+            </tr>
+
+            <tr>
+                <td>
+                    県名 &emsp;
+                </td>
+                <td>
+                    @Model.PerfectureName
+                </td>
+
+
+
+            </tr>
+
+            <tr>
+                <td>
+                    登録日時 &emsp;
+                </td>
+                <td>
+                    @Model.InsertDatetTime
+                </td>
+
+
+
+            </tr>
+
+            <tr>
+                <td>
+                    更新日時 &emsp;
+                </td>
+                <td>
+                    @Model.UpdateDateTime
+                </td>
+
+
+
+            </tr>
+
+            <tr>
+                <td>
+                    地域コード &emsp;
+                </td>
+                <td>
+                    @Model.AreaCode
+                </td>
+
+
+
+            </tr>
+
+            <tr>
+                <td>
+                    地域名 &emsp;
+                </td>
+                <td>
+                    @Model.AreaName
+                </td>
+
+
+
+            </tr>
+
+
+        </tbody>
+    </table>
+
+
+
+</div>
+
+<script type="text/javascript">
+    function PrintDiv() {
+        var divContents = document.getElementById("dtDesign2").innerHTML;
+        var printWindow = window.open('', '', 'height=200,width=400');
+        printWindow.document.write('<html><head><title>Print DIV Content</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>

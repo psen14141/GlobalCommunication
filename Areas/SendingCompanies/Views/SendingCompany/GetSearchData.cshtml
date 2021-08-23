@@ -1,0 +1,33 @@
+﻿@model IEnumerable<GloableCommunication.Areas.SendingCompanies.Model.ViewModels.SendingCompanyViewModel>
+
+@{
+    ViewData["Title"] = "GetSearchData";
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SendingComapny)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SendingName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaName)
+            </td>
+
+            <td>
+                <a href="/SendingCompanies/SendingCompany/AddorEditView/?Id=@item.SendingCompanyId" target="_blank" class="btn btn-primary">編集</a>
+                <a href="/SendingCompanies/SendingCompany/DetailView/?Id=@item.SendingCompanyId" class="btn btn-success" target="_blank">詳細</a>
+                <a class="btn btn-danger" style="color:white" onclick="DeleteConfirmation('/SendingCompanies/SendingCompany/Delete/?Id=@item.SendingCompanyId', null, null, true, '削除しますか？', 'このデータを完全に消去しまか?。')">削除</a>
+            </td>
+
+        </tr>
+
+}

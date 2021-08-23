@@ -1,0 +1,114 @@
+﻿
+@model GloableCommunication.Areas.Wrks.Models.ViewModels.WorksViewModel
+
+@{
+//ViewData["Title"] = "AddView";
+//Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h1>AddView</h1>*@
+
+@*<h4>Work</h4>*@
+@*<hr />*@
+
+
+
+<style>
+
+    label {
+        color: #1b1c20 !important;
+        font-size: 13px !important;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" action="/Wrks/WorkManage/SaveNewData">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @*<label asp-for="WorkId" class="control-label"></label>
+            <input asp-for="WorkId" class="form-control" />
+            <span asp-validation-for="WorkId" class="text-danger"></span>*@
+                <input name="WorkId"
+                       type="hidden" id="WorkId" value="@Model.WorkId" />
+            </div>
+            @*<div class="form-group">
+            <label asp-for="WorkName" class="control-label"></label>
+            <input asp-for="WorkName" class="form-control" />
+            <span asp-validation-for="WorkName" class="text-danger"></span>
+        </div>*@
+
+            <div class="form-group ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="BiuldingLocationRackId" class="control-label">職種</label>
+
+                    </div>
+                    <div class="col-md-8">
+                        <select name="OccupationId" placeholder="Occupation" id="OccupationId" class="form-control">
+                            @foreach (var buildingLocationRack in Model.occupations)
+                            {
+                                if (buildingLocationRack.OccupationId == Model.OccupationId)
+                                {
+                                    <option selected value="@buildingLocationRack.OccupationId">
+                                        @buildingLocationRack.OccupationName
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option selected value="@buildingLocationRack.OccupationId">
+                                        @buildingLocationRack.OccupationName
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="WorkName" class="control-label">作業名</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input name="WorkName" class="form-control"
+                               placeholder="WorkName" type="text" id="WorkName" value="@Model.WorkName" maxlength="50" />
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div class="form-group ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="VerifcationName" class="control-label">検定名</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input name="VerifcationName" class="form-control"
+                               placeholder="VerifcationName" type="text" id="VerifcationName" value="@Model.VerifcationName" maxlength="100" />
+                    </div>
+                </div>
+            </div>
+
+       
+        </form>
+    </div>
+</div>
+
+<script>
+    $("input").on("keyup", function () {
+        var maxLength = $(this).attr("maxlength");
+        if (maxLength == $(this).val().length) {
+            alert("文字数が制限を超えています。" + maxLength + "文字未満で入力してください。");
+        }
+    })
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,124 @@
+﻿@model GloableCommunication.Areas.MasterMaintainance.Models.ViewModels.UserIdViewModel
+@{
+    ViewData["Title"] = "AddorEditView";
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-12">
+        <form class="form-horizontal" method="post" action="">
+            <input type="hidden" name="UserId" id="UserId" value="@Model.UserId" class="form-control" />
+            <span asp-validation-for="UserId" class="text-danger"></span>
+
+            @*<div class="form-group">
+                    <label asp-for="CountryCode" class="control-label">国　CODE</label>
+                    <input asp-for="CountryCode" class="form-control" />
+                    <span asp-validation-for="CountryCode" class="text-danger"></span>
+                </div>*@
+
+            <div class="form-group ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="UserCode" class="control-label">ユーザーID</label>
+                    </div>
+                    <div class="col-md-8 align-self-cente input-group-append">
+                        <input name="UserCode" id="UserCode" value="@Model.UserCode" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    <label asp-for="CountryName" class="control-label">国名</label>
+                    <input asp-for="CountryName" class="form-control" />
+                    <span asp-validation-for="CountryName" class="text-danger"></span>
+                </div>*@
+
+            <div class="form-group ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="Password" class="control-label">パスワード</label>
+                    </div>
+                    <div class="col-md-8 align-self-cente input-group-append">
+                        <input name="Password" type="password" id="Password" value="@Model.Password" class="form-control" />
+                    </div>
+                </div>
+                @*<div class="row">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-8 align-self-cente input-group-append">
+                            <input type="checkbox" onclick="showPassword()" class="form-control" />パスワードを表示
+                        </div>
+                    </div>*@
+            </div>
+
+            <div class="form-group ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label asp-for="Email" class="control-label">メール</label>
+                    </div>
+                    <div class="col-md-8 align-self-cente input-group-append">
+                        <input name="Email" id="Email" value="@Model.Email" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="form-group ">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label asp-for="InsertDateTime" class="control-label">日付と時刻を挿入</label>
+                        </div>
+                        <div class="col-md-8 align-self-cente input-group-append">
+                            <input name="InsertDateTime" id="InsertDateTime" class="form-control" />
+                            <span class="input-group-text">
+                                <i class="la la-calendar-o"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label asp-for="UpdateDateTime" class="control-label">日時の更新</label>
+                        </div>
+                        <div class="col-md-8 align-self-cente input-group-append">
+                            <input name="UpdateDateTime" id="UpdateDateTime" class="form-control" />
+                            <span class="input-group-text">
+                                <i class="la la-calendar-o"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>*@
+
+
+        </form>
+    </div>
+</div>
+<script src="/assets/js/plugin/datepicker/bootstrap-datetimepicker.min.js"></script>
+<script>
+    $('#InsertDateTime').datetimepicker({
+        format: 'YYYY/MM/DD HH:mm',
+
+    });
+    $('#UpdateDateTime').datetimepicker({
+        format: 'YYYY/MM/DD HH:mm',
+    });
+
+</script>
+
+@***************************************************Data Length**************************************************@
+<script>
+    $("input").on("keyup", function () {
+        var maxLength = $(this).attr("maxlength");
+        if (maxLength == $(this).val().length) {
+            alert("Characters length exceeds the Limit, please input less than " + maxLength + " characters");
+        }
+    })
+
+    $("textarea").on("keyup", function () {
+        var maxLength = $(this).attr("maxlength");
+        if (maxLength == $(this).val().length) {
+            alert("Characters length exceeds the Limit, please input less than " + maxLength + " characters");
+        }
+    })
+</script>

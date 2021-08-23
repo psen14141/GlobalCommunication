@@ -1,0 +1,1175 @@
+﻿@model GloableCommunication.Areas.Trainee.Models.ViewModel.TraineeMasterViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+}
+
+<div class="w3-padding w3-white">
+    <p>
+        <button class="w3-button w3-green" onclick="goBack()"><i class="fa fa-arrow-left"></i></button>
+        <button type="submit" class="w3-button w3-blue" onclick="SendData()"><i class="fa fa-search"></i></button>
+        <button type="submit" class="w3-button w3-light-green" onclick="location.reload()"><i class="fa fa-undo"></i></button>
+    <p>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">戻る</a>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">検索</a>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">クリア</a>
+    </p>
+</div>
+
+<script>
+    function Refresh() {
+        document.location.reload()
+    }
+</script>
+
+@***************************@
+<div class=" w3-margin-top w3-gray">
+    <h5 style="text-align:center">実習生オプション</h5>
+</div>
+
+<style>
+    #parent {
+        width: 400px;
+    }
+
+    input[type="text"]:read-only {
+        cursor: auto;
+        background-color: red;
+        color: black;
+    }
+
+    .dropText {
+        height: 40px;
+        width: 150px;
+    }
+
+    .modal-lg {
+        max-width: 90% !important;
+        align-self: center !important;
+    }
+
+    .padding-0 {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 140px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        color: black;
+        padding: 8px 10px;
+        text-decoration: none;
+        display: block;
+    }
+
+    /* Change color of dropdown links on hover */
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+
+    label {
+        color: #1b1c20 !important;
+        font-size: 13px !important;
+    }
+</style>
+
+
+@*////////////////////////////////////////////////////*@
+<div>
+    <div class="card">
+        <div class="card-body">
+            @*aaaaaaaaaaaaaaaaaaaaaa*@
+            <div>
+                <p>検索オプション</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Add" action="" method="post" id="indexForm">
+
+                        @*******************************Hiden Input fields*************************************************************@
+                        <input type="hidden" name="CountryId" id="CountryId" />
+                        <input type="hidden" name="PerfectureId" id="PerfectureId" />
+                        <input type="hidden" name="SendingCompanyId" id="SendingCompanyId" />
+                        <input type="hidden" name="AcceptingCompanyId" id="AcceptingCompanyId" />
+                        <input type="hidden" name="OccupationId" id="OccupationId" />
+                        <input type="hidden" name="ReturnOption" id="ReturnOption" />
+                        <input type="hidden" name="IsDelete" id="IsDelete" />
+                        <input type="hidden" name="IsSorting" id="IsSorting" />
+
+                        <input type="hidden" name="EntryStatus" id="EntryStsPln" />
+                        <input type="hidden" name="EntryStatus" id="EntryStsDisp" />
+                        <input type="hidden" name="EntryStatus" id="EntryStsDone" />
+                        <input type="hidden" name="EntryStatus" id="EntryStsUni" />
+                        <input type="hidden" name="EntryStatus" id="EntryStsRtrn" />
+                        <input type="hidden" name="EntryStatus" id="EntryStsDeath" />
+                        <input type="hidden" name="EntryStatus" id="EntryStsJpn" />
+
+                        <input type="hidden" name="PositionStatus" id="PosIntern" />
+                        <input type="hidden" name="PositionStatus" id="PosAct_2" />
+                        <input type="hidden" name="PositionStatus" id="PosTrin_1" />
+                        <input type="hidden" name="PositionStatus" id="PosAct_3" />
+                        <input type="hidden" name="PositionStatus" id="PosTrin_2" />
+                        <input type="hidden" name="PositionStatus" id="PosSkll_1" />
+                        <input type="hidden" name="PositionStatus" id="PosTrin_3" />
+                        <input type="hidden" name="PositionStatus" id="PosSkll_2" />
+
+                        <div class="form-group" style="padding-top:0.5px;">
+                            <div class="row">
+                                <div class="col-sm-2 align-self-center"><label class="col-md-4 text-right">実習生Noを指定</label></div>
+                                @*<div class="col-md-0.5 align-self-center"><label class="col-md-4 text-right" >〒</label></div>*@
+                                <div class="col-sm-2 align-self-center">
+                                    <input type="text" name="TraineeCode" id="TraineeCode" value="" style="border: 2px solid #ccc;" class="form-control" maxlength="100" autocomplete="off"/>
+                                </div>
+                                <div class="col-md-0.5 align-self-center" style="padding-left:10px;">
+                                    <label asp-for="TraineeName">国</label>
+                                </div>
+                                <div class="col row-cols-md-2">
+                                    <input type="text" name="CountryName" id="CountryName" class="form-control text-left" value="" readonly />
+                                    <span asp-validation-for="CountryName" class="text-danger"></span>
+                                    <asp:RequiredFieldValidator runat="server" id="CountryName" controltovalidate="txtName" errormessage="Please enter your name!" />
+                                </div>
+                                <div class="col  col-md-1">
+                                    <button type="button" class="btn btn-secondary" id="CountryBtn" href="#" onclick="showCountryList()">検索</button>
+                                </div>
+                                <div class="col  col-md-1">
+                                    <button type="button" class="fa fa-undo" onclick="document.getElementById('CountryName').value = ''; document.getElementById('CountryCode').value = ''; document.getElementById('CountryId').value = ''"
+                                            style="padding: 10px 10px 10px 10px; background-color: #e7e7e7; border: 2px solid #ccc; color:blue;"></button>
+                                </div>
+                                <div class="col-md-2 align-self-center"><label asp-for="Instructor1" class="col-md-4 text-right">受入企業を指定</label></div>
+                                <div class="col-md-2 align-self-center">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="radio-inline ">
+                                                <input type="radio" id="btnAcceptFlase" name="AcceptRadio" value='0'
+                                                       onclick="ButtonDisable('#btnAcceptFlase', '#acceptBtn'); document.getElementById('AcceptingCompanyName').value = '';document.getElementById('AcceptingCompanyId').value = ''" checked>しない
+                                            </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="radio-inline">
+                                                <input type="radio" id="btnAcceptTrue" name="AcceptRadio" value="1" onclick="ButtonEnable('#btnAcceptTrue','#acceptBtn')">する
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*aaaaaaaaaaaaa*@
+                        <div class="form-group" style="padding-top:0.5px;">
+                            <div class="row">
+                                <div class="col-md-2 align-self-center">
+                                    <label class="col-md-4 text-right"> 実習実施県区分</label>
+
+                                </div>
+                                <div class="col col-md-2">
+                                    <input type="text" name="PerfectureName" id="PerfectureName" class="form-control" value="" size="10" readonly />
+                                    <span asp-validation-for="PerfectureName" class="text-danger"></span>
+                                    <asp:RequiredFieldValidator runat="server" id="PerfectureName" controltovalidate="txtName" errormessage="Please enter your name!" />
+                                </div>
+                                <div class="col  col-md-1">
+                                    <button type="button" class="btn btn-secondary" href="#" onclick="showPrefectureList()">検索</button>
+
+                                </div>
+                                <div class="col  col-md-1">
+                                    <button type="button" class="fa fa-undo" onclick="document.getElementById('PerfectureName').value = '';document.getElementById('PerfectureId').value = ''" style="padding: 10px 10px 10px 10px; background-color: #e7e7e7; border: 2px solid #ccc; color:blue;"></button>
+                                </div>
+                                <div class="col-md-2 align-self-center">
+
+                                </div>
+                                <div class="col-md-1 align-self-center">
+                                    <button type="button" class="btn btn-secondary" name="acceptBtn" id="acceptBtn" href="#" onclick="showAcceptingComapnyList()">検索</button>
+                                </div>
+                                <div class="col-md-1 align-self-center">
+                                    <button type="button" class="fa fa-undo" onclick="document.getElementById('AcceptingCompanyName').value = '';document.getElementById('AcceptingCompanyId').value = ''"
+                                            style="padding: 10px 10px 10px 10px; background-color: #e7e7e7; border: 2px solid #ccc; color:blue;"></button>
+                                </div>
+                                <div class="col-md-2 align-self-center">
+                                    <input type="text" name="AcceptingCompanyName" id="AcceptingCompanyName" style="border: 2px solid #ccc;" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        @*aaaaaaaa*@
+
+                        <div class="form-group" style="padding-top:0.5px;">
+                            <div class="row">
+                                <div class="col-md-2 align-self-center"><label class="col-md-4 text-right">期生を指定</label></div>
+
+                                <div class="col-md-1 align-self-center">
+                                    <input type="number" name="GraduationFlag" id="GraduationFlag" value="" style="border: 2px solid #ccc;" class="form-control" min="0" maxlength="10" autocomplete="off"/>
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-1 align-self-center"><label class="col-md-4 text-right">期生</label></div>
+                                <div class="col-md-1 align-self-center">
+                                    <button type="button" class="fa fa-undo" onclick="document.getElementById('GraduationFlag').value = ''"
+                                            style="padding: 10px 10px 10px 10px; background-color: #e7e7e7; border: 2px solid #ccc; color:blue;"></button>
+                                </div>
+
+                                <div class="col  col-md-2"></div>
+                                <div class="col  col-md-1"></div>
+                                @*<div class="col  col-md-0.5"></div>*@
+
+                                <div class="col-md-2 align-self-center">
+                                    <label asp-for="Instructor1" class="col-md-4 text-right">
+                                        実習職種を指定
+                                    </label>
+                                </div>
+                                <div class="col-md-2 align-self-center">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="radio-inline ">
+                                                <input type="radio" name="OccupationRadio" id="OccupationFalse"
+                                                       onclick="ButtonDisable('#OccupationFalse', '#occupationBtn');document.getElementById('occupationName').value = '';document.getElementById('OccupationId').value = ''" checked>しない
+                                            </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="OccupationRadio" id="OccupationTrue"
+                                                       onclick="ButtonEnable('#OccupationTrue','#occupationBtn')">する
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @********************@
+
+                        <div class="form-group" style="padding-top:0.5px;">
+                            <div class="row">
+                                <div class="col-md-2 align-self-center">
+                                    <label asp-for="Zip" class="col-md-4 text-right"> 氏名（英）を指定</label>
+
+                                </div>
+                                <div class="col col-md-5">
+                                    <input name="TraineeName" id="TraineeName" style="border: 2px solid #ccc;" class="form-control" value="@Model.TraineeName" size="4" autocomplete="off" maxlength="100"/>
+                                    <span asp-validation-for="" class="text-danger"></span>
+                                    <asp:RequiredFieldValidator runat="server" controltovalidate="txtName" errormessage="Please enter your name!" />
+
+                                </div>
+
+                                <div class="col-md-1 align-self-center">
+                                    <button type="button" class="fa fa-undo" onclick="document.getElementById('TraineeName').value = ''" style="padding: 10px 10px 10px 10px; background-color: #e7e7e7; border: 2px solid #ccc; color:blue;"></button>
+                                </div>
+                                <div class="col-md-1 align-self-center">
+                                    <button type="button" class="btn btn-secondary" id="occupationBtn" href="#" onclick="showOccupationList()">検索</button>
+                                </div>
+                                <div class="col-md-1 align-self-center">
+                                    <button type="button" class="fa fa-undo" onclick="document.getElementById('occupationName').value = '';document.getElementById('OccupationId').value = ''"
+                                            style="padding: 10px 10px 10px 10px; background-color: #e7e7e7; border: 2px solid #ccc; color:blue;"></button>
+                                </div>
+                                <div class="col-md-2 align-self-center">
+                                    <input type="text" name="occupationName" id="occupationName" style="border: 2px solid #ccc;"
+                                           class="form-control" readonly />
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                        @*aaaaaaaaaaaaaaaaaaaaaaa*@
+
+                        <div class="form-group" style="padding-top:0.5px;">
+                            <div class="row">
+                                <div class="col-md-2 align-self-center">
+                                    <div class="dropdown">
+                                        <button class="btn dropdown-toggle dropText" data-toggle="dropdown">
+                                            日付オプション
+                                            @*<span class="caret"></span>*@
+                                        </button>
+                                        <ul class="dropdown-content dropdown-menu" role="menu" aria-labelledby="dropdownMenu" id="dateDropdown">
+                                            <li><a href="#" onclick="SelectDate(1)">入国日を指定</a></li>
+                                            <li><a href="#" onclick="SelectDate(2)">帰国日</a></li>
+                                            <li><a href="#" onclick="SelectDate(3)">3号計画開始日</a></li>
+                                        </ul>
+                                    </div>
+
+                                    @*<label asp-for="Zip" class="col-md-4 text-right">入国予定日を指定</label>*@
+                                </div>
+
+
+                                <div class="col-md-5 align-self-center input-group-append">
+                                    <input type="text" class="form-control" id="FromDate" style="border: 2px solid #ccc;" name="FromDate" placeholder="From Date" value='@Model.FromDate.ToString("yyyy/MM/dd")'>
+                                    <span class="input-group-text">
+                                        <i class="la la-calendar-o"></i>
+                                    </span>
+                                    <label style="text-align:center; padding-left:10px; padding-right:10px; padding-top:10px;"><b>&#xFF5E;</b></label>
+                                    <input type="text" class="form-control" id="ToDate" name="ToDate" style="border: 2px solid #ccc;" placeholder="To Date" value='@Model.ToDate.ToString("yyyy/MM/dd")'>
+                                    <span class="input-group-text">
+                                        <i class="la la-calendar-o"></i>
+                                    </span>
+                                </div>
+
+                                <div class="col-md-1 align-self-center input-group-append">
+                                    <button type="button" class="fa fa-undo" onclick="document.getElementById('FromDate').value = '';document.getElementById('ToDate').value = ''; ResetDropdown()"
+                                            style="padding: 10px 10px 10px 10px; background-color: #e7e7e7; border: 2px solid #ccc; color:blue;"></button>
+                                </div>
+
+                                <div class="col-md-2 align-self-center"><label asp-for="Instructor1" class="col-md-4 text-right">送出機関を指定</label></div>
+                                <div class="col-md-2 align-self-center">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="radio-inline ">
+                                                <input type="radio" name="sendingRadio" id="SendingFalse"
+                                                       onclick="ButtonDisable('#SendingFalse', '#sendingBtn');document.getElementById('SendingCompanyName').value = '';document.getElementById('SendingCompanyId').value = ''" checked>しない
+                                            </label>
+                                        </div>
+                                        <div class="col-md-1">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="sendingRadio" id="SendingTrue" onclick="ButtonEnable('#SendingTrue','#sendingBtn')">する
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*aaaaaaaaaaaaaaaaaa*@
+                        <div class="form-group" style="padding-top:0.5px;">
+                            <div class="row">
+                                <div class="col-md-2 align-self-center">
+                                    <label class="col-md-4 text-right">入国状況を指定</label>
+                                </div>
+                                <div class="col-md-1  align-self-center">
+                                    <div class="row" style="padding-top:1px;">
+                                        <button type="button" class="btn btn-secondary" href="#" onclick="selectAllCheckbox('entryStatusCheck', 'EntryStatus')">
+                                            ALL
+                                        </button>
+                                    </div>
+                                    <div class="row" style="padding-top:1px;">
+                                        <button type="button" class="fa fa-undo"
+                                                onclick="unselectAllCheckbox('entryStatusCheck','EntryStatus')" style="padding: 10px 10px 10px 10px; text-align:right;
+                                                       background-color: #e7e7e7; border: 2px solid #ccc; color:blue;"></button>
+                                    </div>
+                                </div>
+                                @*1111*@
+                                <div class="col-md-5 border border-primary">
+                                    <div class="row" style="padding-top:10px;">
+                                        <div class="col-md-1">
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" onclick="ClickCheckbox('#EntryStatusPlan','#EntryStsPln')"
+                                                           value="0" Name="entryStatusCheck" id="EntryStatusPlan">  予定
+                                                </label>
+                                            </div>
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" onclick="ClickCheckbox('#EntryStatusDisappear','#EntryStsDisp')"
+                                                           value="4" Name="entryStatusCheck" id="EntryStatusDisappear"> 失踪
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" onclick="ClickCheckbox('#EntryStatusDone','#EntryStsDone')"
+                                                           value="1" Name="entryStatusCheck" id="EntryStatusDone">  済み
+                                                </label>
+                                            </div>
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" onclick="ClickCheckbox('#EntryStatusUnionTransfer','#EntryStsUni')"
+                                                           value="5" Name="entryStatusCheck" id="EntryStatusUnionTransfer"> 組合移籍
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" onclick="ClickCheckbox('#EntryStatusReturn','#EntryStsRtrn')"
+                                                           value="2" Name="entryStatusCheck" id="EntryStatusReturn"> 帰国
+                                                </label>
+                                            </div>
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" onclick="ClickCheckbox('#EntryStatusDeath','#EntryStsDeath')"
+                                                           value="6" Name="entryStatusCheck" id="EntryStatusDeath"> 死亡
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" onclick="ClickCheckbox('#EntryStatusReturnJapan','#EntryStsJpn')"
+                                                           value="3" Name="entryStatusCheck" id="EntryStatusReturnJapan">  述中帰国
+                                                </label>
+                                            </div>
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 align-self-center align-self-md-start">
+                                    <button type="button" href="#" id="sendingBtn" onclick="showSendingCompanyList()"
+                                            class="btn btn-secondary">
+                                        検索
+                                    </button>
+                                </div>
+                                <div class="col-md-1 align-self-center align-self-md-start">
+                                    <button type="button" class="fa fa-undo" onclick="document.getElementById('SendingCompanyName').value = '';document.getElementById('SendingCompanyId').value = ''" style="padding: 10px 10px 10px 10px; background-color: #e7e7e7; border: 2px solid #ccc; color:blue;"></button>
+                                </div>
+                                <div class="col-md-2 align-self-center align-self-md-start">
+                                    <input type="text" name="SendingCompanyName" id="SendingCompanyName" class="form-control"
+                                           style="border: 2px solid #ccc;" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        @*aaaaaaaaaaaaaaa*@
+
+                        <div class="form-group" style="padding-top:0.5px;">
+                            <div class="row">
+                                <div class="col-md-2 align-self-center">
+                                    <label class="col-md-4 text-right">在留資格を指定</label>
+                                </div>
+                                <div class="col-md-1 align-self-center">
+                                    <div class="row" style="padding-top:1px;">
+                                        <button type="button" class="btn btn-secondary" href="#"
+                                                onclick="selectAllCheckbox('residenceCheck', 'PositionStatus')">
+                                            ALL
+                                        </button>
+                                    </div>
+                                    <div class="row" style="padding-top:1px;">
+                                        <button type="button" class="fa fa-undo" onclick="unselectAllCheckbox('residenceCheck','PositionStatus')"
+                                                style="padding: 10px 10px 10px 10px; background-color: #e7e7e7; border: 2px solid #ccc; color:blue; vertical-align:middle;"></button>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5 border border-danger">
+                                    <div class="row" style="padding-top:10px;">
+                                        <div class="col-md-1">
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <label class="radio-inline">
+                                                    <input class="form-check-input" style="padding-right:10px;" type="checkbox" value="0" onclick="ClickCheckbox('#PositionStatusIntern','#PosIntern')"
+                                                           name="residenceCheck" id="PositionStatusIntern">    研修生
+                                                </label>
+                                            </div>
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" value="1" onclick="ClickCheckbox('#PositionStatusActivity_2','#PosAct_2')"
+                                                           name="residenceCheck" id="PositionStatusActivity_2"> 特定活動2年
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" value="2" onclick="ClickCheckbox('#PositionStatusTraining_1','#PosTrin_1')"
+                                                           name="residenceCheck" id="PositionStatusTraining_1">   実習1号
+                                                </label>
+                                            </div>
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" value="4" onclick="ClickCheckbox('#PositionStatusActivity_3','#PosAct_3')"
+                                                           name="residenceCheck" id="PositionStatusActivity_3"> 特定活動3年
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" onclick="ClickCheckbox('#PositionStatusTraining_2','#PosTrin_2')"
+                                                           value="3" name="residenceCheck" id="PositionStatusTraining_2">   実習2号
+                                                </label>
+                                            </div>
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" onclick="ClickCheckbox('#PositionStatusSkill_1','#PosSkll_1')"
+                                                           value="6" name="residenceCheck" id="PositionStatusSkill_1">    特定技能 1
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" onclick="ClickCheckbox('#PositionStatusTraining_3','#PosTrin_3')"
+                                                           value="5" name="residenceCheck" id="PositionStatusTraining_3">   実習3号
+                                                </label>
+                                            </div>
+                                            <div class="row">
+                                                <label class="radio-inline ">
+                                                    <input class="form-check-input" type="checkbox" onclick="ClickCheckbox('#PositionStatusSkill_2','#PosSkll_2')"
+                                                           value="7" name="residenceCheck" id="PositionStatusSkill_2">    特定技能 2
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*aaaaaa*@
+                        <div class="form-group" style="padding-top:0.5px;">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="col-md-1 align-self-center">
+                                    </div>
+                                    <div class="col-md-2 align-self-center">
+                                        <label> 削除データ抽出</label>
+                                    </div>
+                                </div>
+                                <div class="col col-md-2" style="padding-right:0px;">
+                                    <div class="row border border-success">
+                                        <div class="col-md-1 align-self-center">
+
+                                        </div>
+                                        <div class="col-md-3 align-self-center">
+                                            <label class="radio-inline " style="padding-top:10px;">
+                                                <input type="radio" name="DeleteRadio" id="DeleteFalse" onclick="DeleteFlag('DeleteFalse')" value="false" checked>しない
+                                            </label>
+
+                                        </div>
+                                        <div class="col-md-1 align-self-center">
+
+                                        </div>
+                                        <div class="col-md-3 align-self-center">
+                                            <label class="radio-inline " style="padding-top:10px;">
+                                                <input type="radio" name="DeleteRadio" id="DeleteTrue" value="true"
+                                                       onclick="DeleteFlag('DeleteTrue')">する
+                                            </label>
+
+                                        </div>
+                                        <div class="col-md-3 align-self-center">
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col col-md-1">
+
+                                    </div>
+                                </div>
+                                <div class="col-md-1" style="padding-left:0px; padding-right:0px;">
+
+                                </div>
+                                <div class="col-md-1 align-self-center" style="padding-top:0px;">
+                                    <div class="col-md-2" style="padding-top:0px;">
+                                        <div class="row">
+                                            <div class="col-md-1 align-self-end" style="padding-top:0px;">
+                                                <label> 制度を指定</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1 align-self-end">
+                                                <label> </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col col-md-2">
+                                    <div class="row border border-info">
+                                        <div class=" col-md-1">
+                                        </div>
+                                        <div class=" col-md-3">
+                                            <div class="row">
+                                                <div class="col-md-1">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="form-check-label" for="flexCheckChecked" style="padding-top:8px;">
+                                                        <input class="form-check-input" type="checkbox" value="0" id="NewSystem" name="NewSystem" checked> 新制度
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=" col-md-1">
+                                        </div>
+                                        <div class=" col-md-3">
+                                            <div class="row">
+                                                <div class="col-md-1">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="form-check-label" for="flexCheckChecked" style="padding-top:8px;">
+                                                        <input class="form-check-input" type="checkbox" value="1" id="OldSystem" name="OldSystem" checked> 旧制度
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2 border border-warning" style="padding-right:0.5px">
+                                    <div class="row">
+                                        <div class="col-md-0.5"></div>
+                                        <div class="col-md-10">
+                                            <label> 並び替えオブション</label>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-0.5"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="radio-inline ">
+                                                <input type="radio" name="SortOption" id="SortbyTrainee"
+                                                       onclick="SortList('SortbyTrainee')" value="false" checked>  実習生No
+                                            </label>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-3">
+                                            <label class="radio-inline">
+                                                <input type="radio" name="SortOption" value="true" id="SortbyEntry"
+                                                       onclick="SortList('SortbyEntry')">  入国日
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        @*aaaaaaaaaaaaaaaaaaa*@
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class=" w3-margin-top w3-gray">
+    <h5 style="text-align:center">実習生一覧</h5>
+</div>
+
+<table id="mainList" class="table table-striped table-bordered table-sm nowrap" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th @*style="font-size:small"*@>
+                実習生No
+            </th>
+            <th @*style="font-size:small"*@>
+                期生
+            </th>
+            <th @*style="font-size:small"*@>
+                氏名（英）
+            </th>
+            <th @*style="font-size:small"*@>
+                氏名(カナ)
+            </th>
+            <th @*style="font-size:small"*@>
+                性別
+            </th>
+            <th @*style="font-size:small"*@>
+                入国日
+            </th>
+            <th @*style="font-size:small"*@>
+                入国状況
+            </th>
+            <th @*style="font-size:small"*@>
+                在留資格
+            </th>
+            <th @*style="font-size:small"*@>
+                受入企業
+
+
+            </th>
+            <th @*style="font-size:small"*@>
+                実習職種
+
+            </th>
+            <th @*style="font-size:small"*@>
+                作業
+
+            </th>
+            <th @*style="font-size:small"*@>
+                送出機関
+
+            </th>
+            <th @*style="font-size:small"*@>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.TraineeM)
+        {
+        <tr>
+            <td @*style="font-size:x-small"*@>
+                @Html.DisplayFor(modelItem => item.TraineeNo)
+            </td>
+            <td @*style="font-size:x-small"*@>
+                @Html.DisplayFor(modelItem => item.GraduationFlg)
+
+            </td>
+            <td @*style="font-size:x-small"*@>
+                @Html.DisplayFor(modelItem => item.TraineeName)
+            </td>
+            <td @*style="font-size:x-small"*@>
+                @Html.DisplayFor(modelItem => item.KatakanaName)
+            </td>
+            @foreach (var row in Model.traineeEntryDates)
+            {
+                if (row.TraineeId == item.TraineeId)
+                {
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => row.sexflagstr)
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => row.EntranceDateStr)
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => row.entrancestatus)
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => row.positionstatus)
+                    </td>
+                    break;
+                }
+            }
+            <td @*style="font-size:x-small"*@>
+                @foreach (var row in Model.Acceptings)
+                {
+                    if (row.AcceptingCompanyId == item.AcceptingCompanyId)
+                    {
+                        @Html.DisplayFor(modelItem => row.AcceptiingCompanyName)
+                        break;
+                    }
+
+                }
+            </td>
+            <td @*style="font-size:x-small"*@>
+                @foreach (var row in Model.OccupationLists)
+                {
+                    if (row.OccupationId == item.OccupationId)
+                    {
+                        @Html.DisplayFor(modelItem => row.OccupationName)
+                        break;
+                    }
+                }
+            </td>
+            <td @*style="font-size:x-small"*@>
+                @foreach (var row in Model.WorkList)
+                {
+                    if (row.WorkId == item.WorkId)
+                    {
+                        @Html.DisplayFor(modelItem => row.WorkName)
+                        break;
+                    }
+                }
+            </td>
+            <td @*style="font-size:x-small"*@>
+                @foreach (var row in Model.Sendings)
+                {
+                    if (row.SendingCompanyId == item.SendingCompanyId)
+                    {
+                        @Html.DisplayFor(modelItem => row.SendingName)
+                        break;
+                    }
+                }
+            </td>
+            <td @*style="font-size:x-small"*@>
+                <a class="btn btn-primary" href='EditTrainee/?Id=@item.TraineeId'>編集</a>
+                <a class="btn btn-success" href='DetailViewTrainee/?Id=@item.TraineeId'>詳細</a>
+                <a class="btn btn-danger" style="color:white;" onclick="DeleteConfirmation('/trainee/TraineeMaster/DeleteTrainee/?Id=@item.TraineeId', null, null, true, '削除しますか？', 'このデータを完全に消去しますか？')">削除</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    $(document).ready(function () {
+        $('#mainList').DataTable({
+            "sort" : false,
+            "scrollX": true,
+            "lengthMenu": [10, 20, 30, 40, 50],
+            "language": {
+                "search": "検索:",
+                "paginate": {
+                    "first": "一ページ目",
+                    "last": "最後のページ",
+                    "next": "次へ",
+                    "previous": "前へ"
+                },
+                "lengthMenu": " _MENU_ 件表示",
+                "info": "検索結果 _TOTAL_ 以上 のうち _START_ ~ _END_件",
+                "infoEmpty": "検索結果 0 以上 のうち 0 ~ 0件",
+                "emptyTable": "条件に一致する結果は見つかりませんでした",
+                "zeroRecords": "条件に一致する結果は見つかりませんでした",
+            },
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+
+@*************************** Modal 1**************************************************************************@
+<div id="listViewModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-nw" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="formArea">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" href="#" onclick="CloseModal()" id="ModalBtn" class="btn btn-primary">選択</button>
+            </div>
+        </div>
+    </div>
+</div>
+@***********************************************************************************************************************@
+
+@*************************** Modal 1**************************************************************************@
+<div id="filterModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="formDataArea">
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+@***********************************************************************************************************************@
+
+<script>
+
+    function goBack() {
+        window.history.back();
+    }
+
+    function SelectDate(id) {
+        $("input[name='ReturnOption']").val(id);
+        $("#FromDate").removeAttr("disabled");
+        $("#ToDate").removeAttr("disabled");
+    }
+
+    window.onload = function () {
+        var returnVal = document.getElementById('ReturnOption').value;
+
+        if (returnVal.value == null) {
+            document.getElementById('FromDate').value = '';
+            document.getElementById('ToDate').value = '';
+            $("#FromDate").attr("disabled", "disabled");
+            $("#ToDate").attr("disabled", "disabled");
+        }
+        $("#acceptBtn").prop("disabled", true);
+        $("#occupationBtn").prop("disabled", true);
+        $("#sendingBtn").prop("disabled", true);
+        $("input[name='IsDelete']").val(false);
+        $("input[name='IsSorting']").val(false);
+    }
+
+    $('#FromDate').datetimepicker({
+        format: 'YYYY/MM/DD',
+    });
+
+    $('#ToDate').datetimepicker({
+        format: 'YYYY/MM/DD',
+
+    });
+
+    var stratDate = document.getElementById('FromDate').value;
+
+    $("#FromDate").on("dp.change", function (stratDate) {
+        $('#ToDate').data("DateTimePicker").minDate(stratDate.date);
+    });
+
+    function CloseModal() {
+        $('#listViewModal').modal('hide');
+    }
+
+    function CloseFilterModal() {
+        $('#filterModal').modal('hide');
+    }
+    var countryInput = document.getElementById("CountryName").value;
+
+    function showCountryList() {
+        $('#listViewModal').modal({ //open the modal
+            backdrop: 'static',
+            keyboard: false
+        }); //open the modal
+        $('#formArea').html(""); // clear exsisting Areas
+        $.ajax({
+            method: "GET",
+            url: "/Trainee/TraineeMaster/CountyListView",
+        })
+            .done(function (msg) {
+                $("#formArea").html(msg);
+            });
+    }
+
+    function showPrefectureList(id) {
+        $('#listViewModal').modal({ //open the modal
+            backdrop: 'static',
+            keyboard: false
+        }); //open the modal
+        $('#formArea').html(""); // clear exsisting Areas
+        $.ajax({
+            method: "GET",
+            url: "/Trainee/TraineeMaster/PrefectureListView/?id=" + id,
+        })
+            .done(function (msg) {
+                $("#formArea").html(msg);
+            });
+    }
+
+    function showSendingCompanyList() {
+        $('#listViewModal').modal({ //open the modal
+            backdrop: 'static',
+            keyboard: false
+        }); //open the modal
+        $('#formArea').html(""); // clear exsisting Areas
+        $.ajax({
+            method: "GET",
+            url: "/Trainee/TraineeMaster/SendingCompanyList",
+        })
+            .done(function (msg) {
+                $("#formArea").html(msg);
+
+            });
+    }
+
+    function showAcceptingComapnyList() {
+        $('#listViewModal').modal({ //open the modal
+            backdrop: 'static',
+            keyboard: false
+        }); //open the modal
+        $('#formArea').html(""); // clear exsisting Areas
+        $.ajax({
+            method: "GET",
+            url: "/Trainee/TraineeMaster/AcceptingCompanyList",
+        })
+            .done(function (msg) {
+                $("#formArea").html(msg);
+
+            });
+    }
+
+    function showOccupationList() {
+        $('#listViewModal').modal({ //open the modal
+            backdrop: 'static',
+            keyboard: false
+        });
+        $('#formArea').html(""); // clear exsisting Areas
+        $.ajax({
+            method: "GET",
+            url: "/Trainee/TraineeMaster/OccupationList",
+        })
+            .done(function (msg) {
+                $("#formArea").html(msg);
+            });
+    }
+
+    function selectAllCheckbox(elementName, inputName) {
+        var elementSelected = document.getElementsByName(elementName),
+            elementLength = elementSelected.length,
+            inputSelected = document.getElementsByName(inputName),
+            i;
+        for (i = 0; i < elementLength; i++) {
+            elementSelected[i].checked = true;
+            var strElement = elementSelected[i].attributes.getNamedItem('id').value,
+                strInput = '#' + inputSelected[i].attributes.getNamedItem('id').value,
+                strValue = elementSelected[i].value;
+
+            $(strInput).val(strValue);
+        }
+
+    }
+
+    function unselectAllCheckbox(elementName, inputName) {
+        var elementSelected = document.getElementsByName(elementName),
+            elementLength = elementSelected.length,
+            inputSelected = document.getElementsByName(inputName),
+            i;
+        for (i = 0; i < elementLength; i++) {
+            elementSelected[i].checked = false;
+            var strInput = '#' + inputSelected[i].attributes.getNamedItem('id').value;
+            $(strInput).val(null);
+
+        }
+
+    }
+
+    $(function () {
+        $(".dropdown-menu li a").click(function () {
+            $(".dropText:first-child").html($(this).text());
+
+        });
+    });
+
+    function SendData() {
+
+        let postData = new FormData();
+        postData.append('countryid', $("#CountryId").val());
+        postData.append('perfectureid', $("#PerfectureId").val());
+        postData.append('sendingCompanyid', $("#SendingCompanyId").val());
+        postData.append('acceptingcompanyid', $("#AcceptingCompanyId").val());
+        postData.append('occupationid', $("#OccupationId").val());
+        postData.append('traineename', $("#TraineeName").val());
+        postData.append('graduationflag', $("#GraduationFlag").val());
+        postData.append('traineecode', $("#TraineeCode").val());
+
+        TraineeCode
+        postData.append('entrystatusplan', $("#EntryStsPln").val());
+        postData.append('entrystatusdone', $("#EntryStsDone").val());
+        postData.append('entrystatusreturn', $("#EntryStsRtrn").val());
+        postData.append('entrystatusjapan', $("#EntryStsJpn").val());
+        postData.append('entrystatusdisappear', $("#EntryStsDisp").val());
+        postData.append('entrystatusuniontransfer', $("#EntryStsUni").val());
+        postData.append('entrystatusdeath', $("#EntryStsDeath").val());
+
+        postData.append('positionstatusintern', $("#PosIntern").val());
+        postData.append('positionstatustraining_1', $("#PosTrin_1").val());
+        postData.append('positionstatustraining_2', $("#PosTrin_2").val());
+        postData.append('positionstatustraining_3', $("#PosTrin_3").val());
+        postData.append('positionstatusactivity_2', $("#PosAct_2").val());
+        postData.append('positionstatusactivity_3', $("#PosAct_3").val());
+        postData.append('positionstatusskill_1', $("#PosSkll_1").val());
+        postData.append('positionstatuskkill_2', $("#PosSkll_2").val());
+
+        var checkNew = document.getElementById('NewSystem');
+        var checkOld = document.getElementById('OldSystem');
+
+        if (checkNew.checked) {
+            postData.append('newsystem', $("#NewSystem").val());
+        }
+        else {
+            postData.append('newsystem', "");
+
+        }
+        if (checkOld.checked) {
+            postData.append('oldsystem', $("#OldSystem").val());
+        } else {
+            postData.append('oldsystem', "");
+        }
+
+        postData.append('issorting', $("#IsSorting").val());
+
+        postData.append('fromdate', $("#FromDate").val());
+        postData.append('todate', $("#ToDate").val());
+        postData.append('returnoption', $("#ReturnOption").val());
+
+        postData.append('isdelete', $("#IsDelete").val());
+
+        $('#filterModal').modal(); //open the modal
+        $('#formDataArea').html(""); // clear exsisting Areas
+        $.ajax({
+            method: "POST",
+            url: "/Trainee/TraineeMaster/GetFilteredData/",
+            data: postData,
+            contentType: false,
+            processData: false,
+
+        })
+            .done(function (msg) {
+                $(document).ready(function () {
+                    $('#dtDesign').DataTable({
+                        "sort": false,
+                        "scrollX": true,
+                        "lengthMenu": [7, 15, 30, 40, 50],
+
+                        "language": {
+                            "search": "検索:",
+                            "paginate": {
+                                "first": "一ページ目",
+                                "last": "最後のページ",
+                                "next": "次へ",
+                                "previous": "前へ"
+                            },
+                            "lengthMenu": " _MENU_ 件表示",
+                            "info": "検索結果 _TOTAL_ 以上 のうち _START_ ~ _END_件",
+                            "infoEmpty": "検索結果 0 以上 のうち 0 ~ 0件",
+                            "emptyTable": "条件に一致する結果は見つかりませんでした",
+                            "zeroRecords": "条件に一致する結果は見つかりませんでした",
+                        },
+                    });
+                    $('.dataTables_length').addClass('bs-select');
+                });
+                $("#formDataArea").html(msg);
+            });
+
+    }
+</script>
+
+<script>
+
+    function SortList(str) {
+        var sortVal = document.getElementById(str);
+        $("input[name='IsSorting']").val(sortVal.value);
+    }
+
+    $(document).ready(function () {
+        $('#SortbyTraineeNo').click(function () {
+            $("input[id='SortbyTrainee']").val(true);
+            $("input[id='SortbyEntry']").val(false);
+        });
+    });
+
+    $(document).ready(function () {
+        $('#SortbyEntryDate').click(function () {
+            $("input[id='SortbyTrainee']").val(false);
+            $("input[id='SortbyEntry']").val(true);
+        });
+    });
+
+    function ClickCheckbox(str1, str2) {
+        $(str1).on('change', function () {
+            var strVal = document.getElementById(str1.substring(1)).value;
+            if ($(this).is(':checked')) {
+                $(str2).val(strVal);
+            } else {
+                $(str2).val(null);
+            }
+        });
+    }
+
+    function ButtonDisable(str1, str2, str3) {
+        if ($(str1).is(':checked')) {
+            $(str2).prop("disabled", true);
+        }
+    }
+
+    function ButtonEnable(str1, str2) {
+        if ($(str1).is(':checked')) {
+            $(str2).prop("disabled", false);
+        }
+    }
+
+    function DeleteFlag(str) {
+        var deleteVal = document.getElementById(str);
+        $("input[name='IsDelete']").val(deleteVal.value);
+    }
+
+    $("input").on("keyup", function () {
+        var maxLength = $(this).attr("maxlength");
+        if (maxLength == $(this).val().length) {
+            alert("文字数が制限を超えています." + maxLength + "文字未満で入力してください");
+        }
+    })
+</script>

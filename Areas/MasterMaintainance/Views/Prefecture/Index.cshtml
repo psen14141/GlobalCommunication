@@ -1,0 +1,324 @@
+﻿@*@model IEnumerable<GloableCommunication.DbModels.Perfecture>*@
+@model IEnumerable<GloableCommunication.Areas.MasterMaintainance.Models.ViewModels.PrefectureViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+@*<script>
+        $(document).ready(function () {
+            $('#dtDesign').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>*@
+
+
+
+
+
+
+
+<div class="w3-padding w3-white">
+    <p>
+        <button class="w3-button w3-green" onclick="goBack()"><i class="fa fa-arrow-left"></i></button>
+        <button class="w3-button w3-blue" onclick="showAddOrEditUi(0)"><i class="fa fa-save"></i></button>
+        <button class="w3-button w3-light-blue"   onclick="Prefecture.Print()"  ><i class="fa fa-print"></i></button>
+        <button id="btnExcel" class="w3-button w3-light-gray"><i class="fa fa-file-excel-o"></i></button>
+    <p>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">戻る</a>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">追加</a>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">印刷</a>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">エクセル出力</a>
+
+    </p>
+</div>
+
+
+
+<!--<div class="w3-padding w3-white">
+    <div>
+        <button class="w3-button w3-green" onclick="location.href = '/Home'" ;><i class="fa fa-arrow-left"></i></button>-->
+@*<button type="submit" class="w3-button w3-blue"><i class="fa fa-search"></i></button>
+    <button class="w3-button w3-light-green"><i class="fa fa-refresh"></i></button>
+    <button class="w3-button w3-red"><i class="fa fa-close"></i></button>
+    <button class="w3-button w3-light-blue"><i class="fa fa-print"></i></button>*@
+<!--</div>
+<div>
+    <a asp-action="Create" style="font-size:15px; padding-right:10px">戻る</a>-->
+@*<a asp-action="Create" style="font-size:15px; padding-right:10px">検索</a>
+    <a asp-action="Create" style="font-size:15px; padding-right:10px">クリア</a>
+    <a asp-action="Create" style="font-size:15px; padding-right:10px">削除</a>
+    <a asp-action="Create" style="font-size:15px; padding-right:10px">印刷</a>*@
+<!--</div>
+</div>-->
+@*<p>
+        <a class="btn btn-primary" href="/MasterMaintainance/Prefecture/AddorEdit/?id=0">新規作成</a>
+
+    </p>*@
+
+<div class="w3-container w3-margin-top w3-gray">
+    <h5 style="text-align:center;"><b>県一覧</b></h5>
+</div>
+<p></p>
+
+@*<div style="overflow:auto">*@
+@*<table id="dtDesign" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+
+                <th>
+                    県 コード
+                </th>
+                <th>
+                    県名
+                </th>
+
+                    地域名
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PerfectureCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PerfectureName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AreaName)
+                    </td>
+                    <td>
+                        <a href="/MasterMaintainance/Prefecture/AddorEdit/?Id=@item.PerfectureId" class="btn btn-primary">編集 </a>
+                        <a href="/MasterMaintainance/Prefecture/Detail/?Id=@item.PerfectureId" class="btn btn-primary">詳細</a>
+                        <a class="btn btn-danger" onclick="DeleteConfirmation('/MaterMaintainance/Area/Delete/?Id=@item.AreaId',null,null,true, 'Warning','GlobalCommunication')">削除</a>
+                        <a class="btn btn-danger" onclick="DeleteConfirmation('/MasterMaintainance/Prefecture/Delete/?Id=@item.PerfectureId')">削除</a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
+@*</div>*@
+
+<table id="dtDesign" style="text-align:center" class="table table-bordered table-striped table-sm" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>
+                県CD
+            </th>
+            <th>
+                県名
+            </th>
+            <th>
+                地域名
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PerfectureCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PerfectureName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AreaName)
+                </td>
+                <td>
+                    <a onclick="showAddOrEditUi(@item.PerfectureId)" class="btn btn-primary" style="color:white;"  >編集 </a>
+                    <a href="/MasterMaintainance/Prefecture/Detail/?Id=@item.PerfectureId" class="btn btn-success">詳細</a>
+
+
+                    <a class="btn btn-danger @*btn-sm*@" style="color:white;" onclick="DeleteConfirmation('/MasterMaintainance/Prefecture/Delete/?Id=@item.PerfectureId', null, null, true, '削除しますか？', 'このデータを完全に消去しますか？')">削除</a>
+
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+<div id="listViewModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-nw" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="formArea">
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div hidden>
+    <table id="ExcelPrint" >
+        <thead>
+            <tr>
+                <th>
+                    県CD
+                </th>
+                <th>
+                    県名
+                </th>
+                <th>
+                    地域名
+                </th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PerfectureCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PerfectureName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AreaName)
+                    </td>
+                   
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+</div>
+
+
+
+
+<script>
+    function showAddOrEditUi(id) {
+        $('#listViewModal').modal({ //open the modal
+            backdrop: 'static',
+            keyboard: false
+        });
+        $('#formArea').html(""); // clear exsisting Areas
+        $.ajax({
+            method: "GET",
+            url: "/MasterMaintainance/Prefecture/AddorEdit/?Id=" + id,
+        })
+            .done(function (msg) {
+                if (id == 0) {
+                    $("input[name='PerfectureCode']").val('');
+                    $("input[name='PerfectureName']").val('');
+                }
+                $("#formArea").html(msg);
+            });
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+
+
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#dtDesign').DataTable({
+            "lengthMenu": [10, 25, 50, 100],
+            "language": {
+                "search": "検索:",
+                "paginate": {
+                    "first": "一ページ目",
+                    "last": "最後のページ",
+                    "next": "次へ",
+                    "previous": "前へ"
+                },
+                "lengthMenu": " _MENU_ 件表示",
+                "info": "検索結果 _TOTAL_ 以上 のうち _START_ ~ _END_件",
+                "infoEmpty": "検索結果 0 以上 のうち 0 ~ 0件",
+                "emptyTable": "条件に一致する結果は見つかりませんでした",
+                "zeroRecords": "条件に一致する結果は見つかりませんでした",
+            },
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+
+
+
+<script>
+    $("#btnExcel").click(function () {
+        tableToExcel('ExcelPrint', 'W3C Example Table');
+    });
+
+
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            window.location.href = uri + base64(format(template, ctx))
+        }
+    })()
+</script>
+
+<script>
+    var Prefecture = new function () {
+        this.Print = function () {
+            var dtDesign = document.getElementById('ExcelPrint');
+            //var Design = dtDesign.length - 1;
+
+            var style = "<style>";
+            style = style + "table {width: 100%;font: 17px Calibri;}";
+            style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+            style = style + "padding: 2px 3px;text-align: left;}";
+            style = style + "</style>";
+
+            var win = window.open('', '', 'height=1000,width=1000');
+            win.document.write(style);
+            win.document.write(dtDesign.outerHTML);
+            win.document.close();
+            win.print();
+        }
+    }
+</script>
+
+@*<script type="text/javascript">
+    function PrintDiv() {
+        var divContents = document.getElementById("dtDesign2").innerHTML;
+        var printWindow = window.open('', '', 'height=1000,width=1000');
+        printWindow.document.write('<html><head><title>Print DIV Content</title>');
+        printWindow.document.write('</head><body >');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>*@
+

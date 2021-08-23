@@ -1,0 +1,488 @@
+﻿@model IEnumerable<GloableCommunication.DbModels.TraineeHistory>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/css/bootstrap.min.css" rel="stylesheet" />
+
+}
+
+<h1>Index</h1>
+
+<script>
+    $('#bologna-list a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+
+</script>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<style>
+    /*    body {
+            padding: 2rem 0rem;
+        }*/
+    #parent {
+        display: flex;
+    }
+
+    #narrow {
+        width: 400px;
+        /*        background: lightblue;
+    */
+    }
+
+    #wide {
+        flex: 1;
+        /* Grow to rest of container */
+        /*        background: lightgreen;
+    */
+    }
+
+    canvas {
+        width: 800px !important;
+        height: 400px !important;
+    }
+
+    #outer {
+        width: 100%;
+        text-align: center;
+    }
+
+    .inner {
+        display: inline-block;
+    }
+
+    body {
+        padding: 2rem 0rem;
+    }
+</style>
+
+<div id="parent">
+    <div id="wide">
+        <div class="card card-custom mx-2 mb-3">
+            <div class="card-body">
+                <h2 class="card-title">研修生情報</h2>
+            </div>
+        </div>
+        <div class="card card-custom mx-2 mb-3">
+            <div class="card text-center">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#description1" aria-selected="true" role="tab" aria-controls="description1">学歴・職歴</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#description2" aria-selected="false" role="tab" aria-controls="description2">派遣元企業</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#description3" aria-selected="false" role="tab" aria-controls="description3">パスポート・外国人登録</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3">
+                        <div class="tab-pane active" id="description1" role="tabpanel">
+                            <p class="card-text">It is the seventh most populous city in Italy, at the heart of a metropolitan area of about one million people. </p>
+                            <a href="#" class="card-link text-danger">Read more</a>
+                        </div>
+
+                        <div class="tab-pane" id="description2" role="tabpanel" aria-labelledby="description2">
+                            <p class="card-text">First settled around 1000 BCE and then founded as the Etruscan Felsina about 500 BCE, it was occupied by the Boii in the 4th century BCE and became a Roman colony and municipium with the name of Bononia in 196 BCE. </p>
+                            <a href="#" class="card-link text-danger">Read more</a>
+                        </div>
+
+                        <div class="tab-pane" id="description3" role="tabpanel" aria-labelledby="description3">
+                              <div class="card-body">
+                                  <h5 class="card-title">パスポート・外国人登録</h5>
+                                <p class="card-text"></p>
+                              </div>
+                              <p class="card-text">
+                                  パスポート                 :<a href="#" class="btn btn-primary btn-sm">参照</a><br /><br />
+                                  研修ビザ 1                 :<a href="#" class="btn btn-primary btn-sm">参照</a><br /><br />
+                                  研修ビザ 2                 :<a href="#" class="btn btn-primary btn-sm">参照</a><br /><br />
+                              </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      
+        </div>
+    </div>
+    <div id="narrow">
+        <div class="card card-custom mx-2 mb-3">
+            <div class="card-body">
+                <p class="card-text">@DateTime.Now.DayOfWeek</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+        <div class="card card-custom mx-2 mb-3">
+            <div class="card-body">
+                <h5 class="card-title"></h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+        <div class="card card-custom mx-2 mb-3">
+            <div class="card-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TraineeHistoryId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TraineeId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstFrom1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstTo1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Career1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstFrom2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstTo2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Career2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstFrom3)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstTo3)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Career3)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstFrom4)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstTo4)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Career4)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstFrom5)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstTo5)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Career5)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstFrom6)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstTo6)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Career6)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstFrom7)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstTo7)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Career7)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstFrom8)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstTo8)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Career8)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstFrom9)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HstTo9)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Career9)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HomecmpName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HomecmpZip)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HomecmpAdress1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HomecmpAdress2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HomecmpTel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HomecmpBusiness)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HomecmpYear)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HomecmpMonth)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VisitFlg)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PassportNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PassportLimit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RegistrationNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RegistrationLimit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PassportImg)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TraineevisaImg1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TraineevisaImg2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DesactvisaImg1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DesactvisaImg2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RegistrationImg1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RegistrationImg2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InsertDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UpdateDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlanDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CheckPlan)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocumentId)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TraineeHistoryId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TraineeId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstFrom1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstTo1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Career1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstFrom2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstTo2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Career2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstFrom3)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstTo3)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Career3)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstFrom4)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstTo4)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Career4)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstFrom5)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstTo5)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Career5)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstFrom6)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstTo6)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Career6)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstFrom7)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstTo7)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Career7)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstFrom8)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstTo8)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Career8)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstFrom9)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HstTo9)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Career9)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomecmpName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomecmpZip)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomecmpAdress1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomecmpAdress2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomecmpTel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomecmpBusiness)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomecmpYear)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HomecmpMonth)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VisitFlg)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PassportNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PassportLimit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegistrationNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegistrationLimit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PassportImg)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TraineevisaImg1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TraineevisaImg2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DesactvisaImg1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DesactvisaImg2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegistrationImg1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegistrationImg2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InsertDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UpdateDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PlanDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CheckPlan)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DocumentId)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
+
+<script>
+    $('#bologna-list a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+</script>

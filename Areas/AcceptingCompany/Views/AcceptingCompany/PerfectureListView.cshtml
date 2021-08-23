@@ -1,0 +1,117 @@
+﻿@model IEnumerable<GloableCommunication.DbModels.Perfecture>
+
+@{
+    ViewData["Title"] = "PerfectureListView";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css">
+
+
+<div>
+    <div>
+        <button class="w3-button w3-green" data-dismiss="modal" onclick="ReturnBtn()"><i class="fa fa-arrow-left"></i></button>
+    </div>
+    <div>
+        <a asp-action="Create" style="font-size:15px; padding-left:10px">戻る</a>
+    </div>
+</div>
+
+<style>
+    tr:hover td {
+        background-color: #0095ff;
+        cursor: pointer;
+    }
+
+    td .selectRow {
+        border: 1px #DDD solid;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .selected {
+        background-color: #0095ff;
+        color: #FFF;
+    }
+    .modal-nw {
+        max-width: 50%;
+        align-self: center;
+    }
+</style>
+
+<div class=" w3-margin-top w3-gray">
+    <h5 style="text-align:center">県リスト</h5>
+</div>
+
+<table id="perfectureTable" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th style="display:none"></th>
+            <th>
+                県 CD
+            </th>
+            <th>
+                県の名前
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="row-click">
+                <td style="display:none">
+                    @Html.DisplayFor(modelItem => item.PerfectureId)
+                </td>
+                <td class="selectRow">
+                    @Html.DisplayFor(modelItem => item.PerfectureCode)
+                </td>
+                <td class="selectRow">
+                    @Html.DisplayFor(modelItem => item.PerfectureName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+
+    $(ModalBtn).prop("disabled", true);
+    $("#perfectureTable tr").click(function () {
+        $(this).addClass('selected').siblings().removeClass('selected');
+        var nameValue = $(this).find('td:nth-child(3)').html();
+        nameValue1 = nameValue.trim()
+        $("input[name='PerfectureName']").val(nameValue1);
+        var idValue = $(this).find('td:nth-child(1)').html();
+        $("input[name='PerfectureId']").val(idValue);
+        $(ModalBtn).prop("disabled", false);
+    });
+
+    function ReturnBtn() {
+        $("input[name='PerfectureId']").val('');
+        $("input[name='PerfectureName']").val('');
+        $('#listViewModal').modal('hide');
+    }
+
+    $(document).ready(function () {
+        $('#perfectureTable').DataTable({
+            "lengthMenu": [5, 10, 15, 20, 30],
+            "language": {
+                "search": "検索:",
+                "paginate": {
+                    "first": "一ページ目",
+                    "last": "最後のページ",
+                    "next": "次へ",
+                    "previous": "前へ"
+                },
+                "lengthMenu": " MENU 件表示",
+                "info": "検索結果 TOTAL 以上 のうち START ~ _END_件",
+                "infoEmpty": "検索結果 0 以上 のうち 0 ~ 0件",
+                "emptyTable": "条件に一致する結果は見つかりませんでした",
+                "zeroRecords": "条件に一致する結果は見つかりませんでした",
+            },
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+
+</script>
+

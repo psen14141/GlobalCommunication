@@ -1,0 +1,95 @@
+﻿@model GloableCommunication.Areas.MasterMaintainance.Models.ViewModels.AreaViewModel
+
+@{
+    ViewData["Title"] = "AddView";
+    Layout = null;
+}
+
+<div class="w3-container w3-margin-top w3-gray">
+    <h5 style="text-align:center"><b>地 域 一 覧</b></h5>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-12">
+        <form method="post" action="/MasterMaintainance/Area/AddView">
+            <input type="hidden" name="AreaId" id="AreaId" class="form-control" value="@Model.AreaId" />
+            <span asp-validation-for="AreaId" class="text-danger"></span>
+
+            <div class="form-group ">
+                <div class="row">
+                    <div class="col-md-4"><label asp-for="AreaCode" class="control-label">地域 CD</label></div>
+                    <div class="col-md-8 align-self-cente input-group-append">
+                        <input name="AreaCode" id="AreaCode" class="form-control" value="@Model.AreaCode" readonly />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <div class="row">
+                    <div class="col-md-4"><label asp-for="AreaName" class="control-label">地域 名</label></div>
+                    <div class="col-md-8 align-self-cente input-group-append">
+                        <input name="AreaName" id="AreaName" class="form-control" value="@Model.AreaName" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <div class="row">
+                    <div class="col-md-4"><label asp-for="UpdateDateTime" class="control-label">日時の更新</label></div>
+                    <div class="col-md-8 align-self-center">
+                        <input name="UpdateDateTime" id="UpdateDateTime" class="form-control" value="@Model.UpdateDateTime" disabled />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <div class="row">
+                    <div class="col-md-4"><label asp-for="InsertDateTime" class="control-label">日付と時刻を挿入</label></div>
+                    <div class="col-md-8 align-self-center">
+                        <input name="InsertDateTime" id="InsertDateTime" class="form-control" value="@Model.InsertDateTime" disabled />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <div class="row">
+                    <div class="col-md-4"><label asp-for="CountryId" class="control-label">国</label></div>
+                    <div class="col-md-8">
+                        <select name="CountryId" placeholder="Choose country" id="CountryId" class="form-control">
+                            @foreach (var countries in Model.Countries.Where(w => w.IsDeleteCountry == false))
+                            {
+                                if (countries.CountryId == Model.CountryId)
+                                {
+                                    <option selected value="@countries.CountryId">@countries.CountryName</option>
+                                }
+                                else
+                                {
+                                    <option value="@countries.CountryId">@countries.CountryName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*************************************************System Date****************************************************@
+<script>
+    var today = new Date();
+    var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
+    document.getElementById("UpdateDateTime").value = date;
+</script>
+
+<script>
+    var today = new Date();
+    var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
+    document.getElementById("InsertDateTime").value = date;
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

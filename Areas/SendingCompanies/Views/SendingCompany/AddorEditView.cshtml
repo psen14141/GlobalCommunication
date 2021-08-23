@@ -1,0 +1,342 @@
+﻿@model GloableCommunication.Areas.SendingCompanies.Model.ViewModels.SendingCompanyViewModel
+
+@{
+    ViewData["Title"] = "AddorEditView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    label {
+        color: #1b1c20 !important;
+        font-size: 14px !important;
+    }
+
+    button {
+        color: #1b1c20 !important;
+        font-size: 14px !important;
+    }
+
+    input {
+        color: #1b1c20 !important;
+        font-size: 14px !important;
+    }
+</style>
+
+<div class="w3-padding w3-white">
+    <div>
+        <button class="w3-button w3-green" onclick="location.href = '/SendingCompanies/SendingCompany/'"><i class="fa fa-arrow-left"></i></button>
+        <button class="w3-button w3-blue" onclick="SaveData()"><i class="fa fa-check-circle"></i></button>
+        <button class="w3-button w3-light-green" onclick="AddOrEditReset()"><i class="fa fa-undo"></i></button>
+    </div>
+    <div>
+        <a asp-action="Create" style="font-size:15px; padding-left:10px">戻る</a>
+        <a asp-action="Create" style="font-size:15px; padding-left:10px">登録</a>
+        <a asp-action="Create" style="font-size:15px; padding-left:10px">クリア</a>
+        <p style="text-align:right">更新日: 2018/08/10</p>
+    </div>
+</div>
+
+<div class="w3-container w3-margin-top w3-gray">
+    <h5 style="text-align:center">送出機関情報</h5>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" action="/SendingCompanies/SendingCompany/SaveData" id="EditForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" name="SendingCompanyId " id="SendingCompanyId" value="@Model.SendingCompanyId" />
+                <input type="hidden" id="CountryId" name="CountryId" value="@Model.CountryId" />
+                <input type="hidden" id="AreaId" name="AreaId" value="@Model.AreaId" />
+                <input type="hidden" name="InsertDate " id="InsertDate" value="@DateTime.Now" />
+                <input type="hidden" name="UpdateDate " id="UpdateDate" value="@DateTime.Now" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="SendingComapny" class="col-md-4 text-right">送出機関CD</label></div>
+                    <div class="col-md-4 align-self-center">
+                        <input name="SendingComapny" id="SendingComapny" maxlength="50" class="form-control" value="@Model.SendingComapny" style="border: 2px solid #ccc;" readonly/>
+                    </div>
+                    <div class="col-md-2 align-self-center"><label asp-for="Telephone" class="col-md-2 text-right">連絡先</label></div>
+                    <div class="col-md-2 align-self-center">
+                        <label asp-for="Telephone">TEL</label>
+                        <input name="Telephone" id="Telephone" style="border: 2px solid #ccc;" maxlength="18" value="@Model.Telephone" class="form-control" />
+                    </div>
+                    <div class="col-md-2 align-self-center">
+                        <label asp-for="Fax" class="col-md-1 text-right">FAX</label>
+                        <input name="Fax" id="Fax" maxlength="18" value="@Model.Fax" style="border: 2px solid #ccc;" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="SendingName" class="col-md-4 text-right">送出機関名</label></div>
+                    <div class="col-md-4 align-self-center">
+                        <input name="SendingName" id="SendingName" maxlength="100" value="@Model.SendingName" class="form-control" style="border: 2px solid #ccc;" />
+                    </div>
+                    <div class="col-md-2 align-self-center"><label asp-for="CheifExecutiveOfficer" class="col-md-4 text-right">代表者</label></div>
+                    <div class="col-md-4 align-self-center">
+                        <input name="CheifExecutiveOfficer" maxlength="50" id="CheifExecutiveOfficer" style="border: 2px solid #ccc;" value="@Model.CheifExecutiveOfficer" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="Fullname" class="col-md-4 text-right">正式名称</label></div>
+                    <div class="col-md-4 align-self-center">
+                        <input name="Fullname" id="Fullname" maxlength="100" value="@Model.Fullname" class="form-control" style="border: 2px solid #ccc;" />
+                    </div>
+                    <div class="col-md-2 align-self-center"><label asp-for="Charge" class="col-md-4 text-right">担当者</label></div>
+                    <div class="col-md-4 align-self-center">
+                        <input name="Charge" id="Charge" style="border: 2px solid #ccc;" maxlength="50" value="@Model.Charge" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="CountryId" class="col-md-4 text-right">国区分</label></div>
+                    <div class="col-md-1 align-self-center">
+                        <input type="text" name="CountryName" id="CountryName" maxlength="100" value="@Model.CountryName" readonly class="form-control text-left" style="border: 2px solid #ccc;" />
+                        <span asp-validation-for="CountryName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2 align-self-center" style="padding-left:40px">
+                        <button type="button" class="btn btn-secondary" style="color: white !important; padding: 10px 30px 10px 30px;" href="#" onclick="showCountryList()">検索</button>
+                        <button type="button" class="fa fa-undo" onclick="document.getElementById('CountryName').value = ''" style="padding: 10px 10px 10px 10px; background-color: #e7e7e7; border: 2px solid #ccc; color:blue;"></button>
+                    </div>
+                    <div class="col-md-1 align-self-center" style="padding-left:40px">
+                        <label asp-for="AreaId" style="padding-right:60px">@*A国*@</label>
+                    </div>
+                    <div class="col-md-2 align-self-center"><label asp-for="ChargeTelephone" class="col-md-4 text-right">担当者TEL</label></div>
+                    <div class="col-md-4 align-self-center">
+                        <input name="ChargeTelephone" id="ChargeTelephone" maxlength="18" style="border: 2px solid #ccc;" value="@Model.ChargeTelephone" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="AreaId" class="col-md-4 text-right">地域区分</label></div>
+                    <div class="col-md-1 align-self-center">
+                        <input type="text" name="AreaName" id="AreaName" maxlength="100" value="@Model.AreaName" class="form-control text-left" readonly style="border: 2px solid #ccc;" />
+                    </div>
+                    <div class="col-md-2 align-self-center" style="padding-left:40px">
+                        <button type="button" class="btn btn-secondary" style="color: white !important; padding: 10px 30px 10px 30px;" href="#" onclick="showAreaList()">検索</button>
+                        <button type="button" class="fa fa-undo" onclick="document.getElementById('AreaName').value = ''" style="padding: 10px 10px 10px 10px; background-color: #e7e7e7; border: 2px solid #ccc; color:blue;"></button>
+                    </div>
+                    <div class="col-md-1 align-self-center" style="padding-left:40px">
+                        <label asp-for="AreaId" style="padding-right:60px">@*A*@</label>
+                    </div>
+                    <div class="col-md-2 align-self-center"><label asp-for="Memo1" class="col-md-4 text-right">MEMO</label></div>
+                    <div class="col-md-4 align-self-center">
+                        <textarea name="Memo1" id="Memo1" rows="4" cols="50" style="border: 2px solid #ccc;" maxlength="500" class="form-control">@Model.Memo1</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"><label asp-for="Zip" class="col-md-4 text-right">所在地</label></div>
+                    <div class="col-md-1 align-self-center">
+                        <span style="color:red;"><b>〒</b></span>
+                    </div>
+                    <div class="col-md-3 align-self-center">
+                        <input name="Zip" id="Zip" maxlength="50" value="@Model.Zip" style="border: 2px solid #ccc;" class="form-control" />
+                        <span asp-validation-for="Zip" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"></div>
+                    <div class="col-md-4 align-self-center">
+                        <input name="Address1" id="Address1" maxlength="150" style="border: 2px solid #ccc;" value="@Model.Address1" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2 align-self-center"></div>
+                    <div class="col-md-4 align-self-center">
+                        <input name="Address2" id="Address2" style="border: 2px solid #ccc;" maxlength="150" value="@Model.Address2" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+<script>
+
+    function SaveData() {
+
+        let postData = new FormData();
+        postData.append('SendingCompanyId', $("#SendingCompanyId").val());
+        postData.append('InsertDate', $("#InsertDate").val());
+        postData.append('UpdateDate', $("#UpdateDate").val());
+        if (!IsFilled("SendingComapny", "送出機関CD", "送出機関CDを入力してください！")) {
+            return;
+        }
+        postData.append('SendingComapny', $("#SendingComapny").val());
+        postData.append('Telephone', $("#Telephone").val());
+        postData.append('Fax', $("#Fax").val());
+        if (!IsFilled("SendingName", "送出機関名", "送出機関名を入力してください！")) {
+            return;
+        }
+        postData.append('SendingName', $("#SendingName").val());
+        postData.append('CheifExecutiveOfficer', $("#CheifExecutiveOfficer").val());
+        if (!IsFilled("Fullname", "正式名称", "正式名称を入力してください！")) {
+            return;
+        }
+        postData.append('Fullname', $("#Fullname").val());
+        postData.append('Charge', $("#Charge").val());
+        if (!IsFilled("CountryName", "国区分", "国を選択してください！")) {
+            return;
+        }
+        postData.append('CountryId', $("#CountryId").val());
+        postData.append('ChargeTelephone', $("#ChargeTelephone").val());
+        if (!IsFilled("AreaName", "地域区分", "地域区分を選択してください！")) {
+            return;
+        }
+        postData.append('AreaId', $("#AreaId").val());
+        postData.append('Memo1', $("#Memo1").val());
+        postData.append('Zip', $("#Zip").val());
+        postData.append('Address1', $("#Address1").val());
+        postData.append('Address2', $("#Address2").val());
+
+
+        $.ajax({
+            method: "POST",
+            url: "/SendingCompanies/SendingCompany/SaveData/",
+            data: postData,
+            contentType: false,
+            processData: false,
+        })
+            .done(function (msg) {
+                alert("データが保存されました。");
+                location.href = '/SendingCompanies/SendingCompany/';
+            });
+    }
+
+</script>
+
+
+@*************************** Modal 1**************************************************************************@
+<div id="listViewModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-nw" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="formArea">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" href="#" onclick="CloseModal()" id="ModalBtn" class="btn btn-primary">選択</button>
+            </div>
+        </div>
+    </div>
+</div>
+@***********************************************************************************************************************@
+
+
+<script>
+    function CloseModal() {
+        $('#listViewModal').modal('hide');
+    }
+</script>
+
+<script>
+    function showCountryList() {
+        $('#listViewModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        }); //open the modal
+        $('#formArea').html(""); // clear exsisting Areas
+        $.ajax({
+            method: "GET",
+            url: "/SendingCompanies/SendingCompany/CountyListView",
+        })
+            .done(function (msg) {
+                $("#formArea").html(msg);
+
+            });
+    }
+</script>
+
+
+<script>
+    function showAreaList() {
+        $('#listViewModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        }); //open the modal
+        $('#formArea').html(""); // clear exsisting Areas
+        $.ajax({
+            method: "GET",
+            url: "/SendingCompanies/SendingCompany/AreaListView",
+        })
+            .done(function (msg) {
+                $("#formArea").html(msg);
+
+            });
+    }
+</script>
+
+
+@*Clear form data*@
+<script>
+    function AddOrEditReset() {
+        //document.getElementById("EditForm").reset();
+        document.getElementById('Telephone').value = '';
+        document.getElementById('Fax').value = '';
+        document.getElementById('SendingName').value = '';
+        document.getElementById('Fullname').value = '';
+        document.getElementById('Charge').value = '';
+        document.getElementById('CountryName').value = '';
+        document.getElementById('ChargeTelephone').value = '';
+        document.getElementById('AreaName').value = '';
+        document.getElementById('Memo1').value = '';
+        document.getElementById('Zip').value = '';
+        document.getElementById('Address1').value = '';
+        document.getElementById('Address2').value = '';
+        document.getElementById('CountryName').value = '';
+    }
+</script>
+
+
+
+@*Back Button*@
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+<script>
+    $("input").on("keyup", function () {
+        var maxLength = $(this).attr("maxlength");
+        if (maxLength == $(this).val().length) {
+            alert("文字数が制限を超えています。" + maxLength + "文字未満で入力してください。");
+        }
+    })
+
+    $("textarea").on("keyup", function () {
+        var maxLength = $(this).attr("maxlength");
+        if (maxLength == $(this).val().length) {
+            alert("文字数が制限を超えています。" + maxLength + "文字未満で入力してください。");
+        }
+    })
+</script>

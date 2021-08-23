@@ -1,0 +1,33 @@
+﻿@model IEnumerable<GloableCommunication.Areas.AcceptingCompany.Model.ViewModel.AcceptingCompanyViewModel>
+@{
+    ViewData["Title"] = "SearchData";
+    Layout = null;
+}
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AcceptingCompanyCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AcceptiingCompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AreaName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PerfectureName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.entranceCount)
+                </td>
+
+                <td>
+                    <a href="/AcceptingCompany/AcceptingCompany/Add/?Id=@item.AcceptingCompanyId" class="btn btn-primary" target="_blank">編集</a>
+                    <a href="/AcceptingCompany/AcceptingCompany/DetailView/?Id=@item.AcceptingCompanyId" class="btn btn-success" target="_blank">詳細</a>
+                    <a class="btn btn-danger" onclick="DeleteConfirmation('/AcceptingCompany/AcceptingCompany/IsDelete/?Id=@item.AcceptingCompanyId', null, null, true, '削除しますか？', 'このデータを完全に消去しました。')">削除</a>
+                </td>
+            </tr>
+        }
+    

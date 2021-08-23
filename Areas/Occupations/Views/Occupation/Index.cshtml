@@ -1,0 +1,251 @@
+﻿@model IEnumerable<GloableCommunication.Areas.Occupations.Model.ViewModels.OccupationViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<div class="w3-padding w3-white">
+    <p>
+        <button class="w3-button w3-green" onclick="goBack()"><i class="fa fa-arrow-left"></i></button>
+        <button class="w3-button w3-blue" onclick="showAddOrEditUi(0)"><i class="fa fa-save"></i></button>
+        <button class="w3-button w3-light-blue" onclick="Sending.Print()"><i class="fa fa-print"></i></button>
+        <button id="btnExcel" class="w3-button w3-light-gray"><i class="fa fa-file-excel-o"></i></button>
+    <p>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">戻る</a>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">追加</a>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">印刷</a>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">エクセル出力</a>
+
+    </p>
+</div>
+
+<div class="w3-container w3-margin-top w3-gray">
+    <h5 style="text-align:center"><b>実習職種一覧</b></h5>
+</div>
+
+
+
+<p>
+    @*<a href="#" target="_blank" class="btn btn-primary" onclick="showAddOrEditUi(0)">追加</a>*@
+</p>
+<div class="row">
+
+</div>
+
+<table id="dtDesign" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                実習職種CD
+            </th>
+            <th>
+                実習職種名
+            </th>
+            <th style="text-align:center">
+                実習年数
+            </th>
+            <th>
+                作成日
+            </th>
+            <th>
+                更新日
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OccupationId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OccupationCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OccupationName)
+                </td>
+                <td style="text-align:center">
+                    @Html.DisplayFor(modelItem => item.TraineeYearFlag)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.createdate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.updatedate)
+                </td>
+                <td>
+                    <a class="btn btn-primary" style="color:white;" onclick="showAddOrEditUi(@item.OccupationId)">編集</a>
+                    <a class="btn btn-danger" style="color:white;" onclick="DeleteConfirmation('/Occupations/Occupation/Delete/?Id=@item.OccupationId', null, null, true, '削除しますか？', 'このデータを完全に消去しまか？')">削除</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div hidden>
+    <table id="occupationTable">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    実習職種CD
+                </th>
+                <th>
+                    実習職種名
+                </th>
+                <th style="text-align:center">
+                    実習年数
+                </th>
+                <th>
+                    作成日
+                </th>
+                <th>
+                    更新日
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OccupationId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OccupationCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OccupationName)
+                    </td>
+                    <td style="text-align:center">
+                        @Html.DisplayFor(modelItem => item.TraineeYearFlag)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.createdate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.updatedate)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div id="listViewModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-nw" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="formArea">
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showAddOrEditUi(id) {
+        $('#listViewModal').modal({ //open the modal
+            backdrop: 'static',
+            keyboard: false
+        });
+        $('#formArea').html(""); // clear exsisting Areas
+        $.ajax({
+            method: "GET",
+            url: "/Occupations/Occupation/AddorEditView/?Id=" + id,
+        })
+            .done(function (msg) {
+                if (id == 0) {
+                    $("input[name='OccupationCode']").val('');
+                }
+                $("#formArea").html(msg);
+            });
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#dtDesign').DataTable({
+            "lengthMenu": [10, 20, 30, 40, 50],
+            "language": {
+                "search": "検索:",
+                "paginate": {
+                    "first": "一ページ目",
+                    "last": "最後のページ",
+                    "next": "次へ",
+                    "previous": "前へ"
+                },
+                "lengthMenu": " _MENU_ 件表示",
+                "info": "検索結果 _TOTAL_ 以上 のうち _START_ ~ _END_件",
+                "infoEmpty": "検索結果 0 以上 のうち 0 ~ 0件",
+                "emptyTable": "条件に一致する結果は見つかりませんでした",
+                "zeroRecords": "条件に一致する結果は見つかりませんでした",
+            },
+        });
+        $('.dataTables_length').addClass('bs-select');
+    });
+</script>
+
+
+<script>
+    $("#btnExcel").click(function () {
+        tableToExcel('occupationTable', 'W3C Example Table');
+    });
+
+
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            window.location.href = uri + base64(format(template, ctx))
+        }
+    })()
+</script>
+
+<script>
+    var Sending = new function () {
+        this.Print = function () {
+            var dtDesign = document.getElementById('occupationTable');
+            //var Design = dtDesign.length - 1;
+
+            var style = "<style>";
+            style = style + "table {width: 100%;font: 17px Calibri;}";
+            style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+            style = style + "padding: 2px 3px;text-align: left;}";
+            style = style + "</style>";
+
+            var win = window.open('', '', 'height=1000width=1000');
+            win.document.write(style);          //  add the style.
+            win.document.write(dtDesign.outerHTML);
+            win.document.close();
+            win.print();
+        }
+    }
+</script>

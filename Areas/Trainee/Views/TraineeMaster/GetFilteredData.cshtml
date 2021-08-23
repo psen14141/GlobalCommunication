@@ -1,0 +1,292 @@
+﻿@model IEnumerable<GloableCommunication.Areas.Trainee.Models.ViewModel.TraineeMasterViewModel>
+
+
+@{
+    ViewData["Title"] = "GetFilteredData";
+    Layout = null;
+}
+
+<style>
+    tr:hover td {
+        background-color: inherit;
+        cursor: auto;
+    }
+</style>
+
+
+<div>
+    <div>
+        <button class="w3-button w3-green" data-dismiss="modal"><i class="fa fa-arrow-left"></i></button>
+        <button class="w3-button w3-light-blue"><i class="fa fa-print" onclick="Sending.Print()"></i></button>
+        <button id="btnExcel" class="w3-button w3-light-gray"><i class="fa fa-file-excel-o"></i></button>
+    </div>
+    <div>
+        <a style="font-size:15px; padding-left:10px">戻る</a>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">印刷</a>
+        <a asp-action="Create" style="font-size:15px; padding-right:10px">エクセル出力</a>
+    </div>
+</div>
+
+<script>
+
+</script>
+
+<div class=" w3-margin-top w3-gray">
+    <h5 style="text-align:center">
+        検索結果
+    </h5>
+</div>
+
+<table id="dtDesign" class="table table-striped table-bordered table-sm nowrap"  cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th @*style="font-size:small"*@>
+                実習生No
+            </th>
+            <th @*style="font-size:small"*@>
+                期生
+            </th>
+            <th @*style="font-size:small"*@>
+                氏名（英）
+            </th>
+            <th @*style="font-size:small"*@>
+                氏名(カナ)
+            </th>
+            <th @*style="font-size:small"*@>
+                性別
+            </th>
+            <th @*style="font-size:small"*@>
+                入国日
+            </th>
+            <th @*style="font-size:small"*@>
+                入国状況
+            </th>
+            <th @*style="font-size:small"*@>
+                在留資格
+            </th>
+            <th @*style="font-size:small"*@>
+                受入企業
+            </th>
+            <th @*style="font-size:small"*@>
+                職種
+            </th>
+            <th @*style="font-size:small"*@>
+                作業
+            </th>
+            <th @*style="font-size:small"*@>
+                送出機関
+            </th>
+            <th @*style="font-size:small"*@>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td @*style="font-size:x-small"*@>
+                    @Html.DisplayFor(modelItem => item.TraineeNo)
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    @Html.DisplayFor(modelItem => item.GraduationFlg)
+
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    @Html.DisplayFor(modelItem => item.TraineeName)
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    @Html.DisplayFor(modelItem => item.KatakanaName)
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    @Html.DisplayFor(modelItem => item.sexflagstr)
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    @Html.DisplayFor(modelItem => item.EntranceDateStr)
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    @Html.DisplayFor(modelItem => item.entrancestatus)
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    @Html.DisplayFor(modelItem => item.positionstatus)
+
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    @foreach (var row in item.Acceptings)
+                    {
+                        @Html.DisplayFor(modelItem => row.AcceptiingCompanyName)
+                    }
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    @foreach (var row in item.OccupationLists)
+                    {
+                        @Html.DisplayFor(modelItem => row.OccupationName)
+                    }
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    @foreach (var row in item.WorkList)
+                    {
+                        @Html.DisplayFor(modelItem => row.WorkName)
+                    }
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    @foreach (var row in item.Sendings)
+                    {
+                        @Html.DisplayFor(modelItem => row.SendingName)
+                    }
+                </td>
+                <td @*style="font-size:x-small"*@>
+                    <a class="btn btn-primary @*btn-sm*@" href='EditTrainee/?Id=@item.TraineeId'>編集</a>
+                    <a class="btn btn-success @*btn-sm*@" href='DetailViewTrainee/?Id=@item.TraineeId'>詳細</a>
+                    @if (item.IsDelete == false)
+                    {
+                        <a class="btn btn-danger @*btn-sm*@" style="color:white;" onclick="DeleteConfirmation('/trainee/TraineeMaster/DeleteTrainee/?Id=@item.TraineeId', null, null, true, '削除しますか？', 'このデータを完全に消去しますか？')">削除</a>
+
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div hidden>
+    <table id="TraineeTable" class="nowrap"  cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th @*style="font-size:small"*@>
+                    実習生No
+                </th>
+                <th @*style="font-size:small"*@>
+                    期生
+                </th>
+                <th @*style="font-size:small"*@>
+                    氏名（英）
+                </th>
+                <th @*style="font-size:small"*@>
+                    氏名(カナ)
+                </th>
+                <th @*style="font-size:small"*@>
+                    性別
+                </th>
+                <th @*style="font-size:small"*@>
+                    入国日
+                </th>
+                <th @*style="font-size:small"*@>
+                    入国状況
+                </th>
+                <th @*style="font-size:small"*@>
+                    在留資格
+                </th>
+                <th @*style="font-size:small"*@>
+                    受入企業
+                </th>
+                <th @*style="font-size:small"*@>
+                    職種
+                </th>
+                <th @*style="font-size:small"*@>
+                    作業
+                </th>
+                <th @*style="font-size:small"*@>
+                    送出機関
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => item.TraineeNo)
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => item.GraduationFlg)
+
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => item.TraineeName)
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => item.KatakanaName)
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => item.sexflagstr)
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => item.EntranceDateStr)
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => item.entrancestatus)
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @Html.DisplayFor(modelItem => item.positionstatus)
+
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @foreach (var row in item.Acceptings)
+                        {
+                            @Html.DisplayFor(modelItem => row.AcceptiingCompanyName)
+                        }
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @foreach (var row in item.OccupationLists)
+                        {
+                            @Html.DisplayFor(modelItem => row.OccupationName)
+                        }
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @foreach (var row in item.WorkList)
+                        {
+                            @Html.DisplayFor(modelItem => row.WorkName)
+                        }
+                    </td>
+                    <td @*style="font-size:x-small"*@>
+                        @foreach (var row in item.Sendings)
+                        {
+                            @Html.DisplayFor(modelItem => row.SendingName)
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $("#btnExcel").click(function () {
+        tableToExcel('TraineeTable', 'W3C Example Table');
+    });
+
+
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            window.location.href = uri + base64(format(template, ctx))
+        }
+    })()
+</script>
+
+<script>
+    var Sending = new function () {
+        this.Print = function () {
+            var tabDesign = document.getElementById('TraineeTable');
+            //var Design = dtDesign.length - 1;
+
+            var style = "<style>";
+            style = style + "table {width: 100%;font: 17px Calibri;}";
+            style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+            style = style + "padding: 2px 3px;text-align: left;}";
+            style = style + "</style>";
+
+            var win = window.open('', '', 'height=1000width=1000');
+            win.document.write(style);          //  add the style.
+            win.document.write(tabDesign.outerHTML);
+            win.document.close();
+            win.print();
+        }
+    }
+</script>
